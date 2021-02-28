@@ -59,7 +59,9 @@ class _FinishRecipeState extends State<FinishRecipeRoute> {
           } else if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyHomePage(title: 'Flutter Demo Home Page')),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MyHomePage(title: 'Flutter Demo Home Page')),
             );
           }
         },
@@ -98,14 +100,12 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
               ),
             ),
           );
-        }
-    );
+        });
   }
 
   _imgFromCamera() async {
     File image = (await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50
-    )) as File;
+        source: ImageSource.camera, imageQuality: 50)) as File;
 
     setState(() {
       _image = image;
@@ -113,9 +113,8 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
   }
 
   _imgFromGallery() async {
-    File image = (await  ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50
-    )) as File;
+    File image = (await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50)) as File;
 
     setState(() {
       _image = image;
@@ -129,56 +128,98 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
         title: Text("Create a Recipe"),
       ),
       body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("Ingredients", textAlign: TextAlign.left),
-              Row(children: <Widget>[
-                Expanded(
-                    flex: 5,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(children: <Widget>[
+                  Expanded(
+                      flex: 5,
+                      child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration:
+                            InputDecoration(hintText: "Enter Recipe Name"),
+                      )),
+                  Expanded(
+                    flex: 1,
+                    child: Container(width: 0.0, height: 0.0),
+                  ),
+                  Expanded(
+                      flex: 4,
+                      child: GestureDetector(
+                          onTap: () {
+                            _showPicker(context);
+                          },
+                          child: CircleAvatar(
+                            child: _image != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.file(
+                                      _image,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    width: 100,
+                                    height: 100,
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.grey[800],
+                                    ),
+                                  ),
+                          )))
+                ]),
+                Padding(padding: EdgeInsets.only(bottom: 20)),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Ingredients",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    )),
+                Padding(padding: EdgeInsets.only(bottom: 10)),
+                Row(children: <Widget>[
+                  Expanded(
                     child: TextField(
                       keyboardType: TextInputType.multiline,
-                      maxLines: null,
+                      maxLines: 8,
                       decoration: InputDecoration(
                           border: const OutlineInputBorder(),
-                          hintText: "Enter Ingredients"),
+                          hintText: "..."),
+                    ),
+                  )
+                ]),
+                Padding(padding: EdgeInsets.only(bottom: 20)),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Instructions",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
                     )),
-                Expanded(
-                  flex:1,
-                  child: Container(width:0.0,height:0.0),
-                ),
-                Expanded(
-                    flex: 4,
-                    child: GestureDetector(
-                        onTap: () {
-                          _showPicker(context);
-                        },
-                        child: CircleAvatar(
-                          child: _image != null
-                              ? ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.file(
-                              _image,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          )
-                              : Container(
-                            decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(50)),
-                            width: 100,
-                            height: 100,
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                        )
-                    ))
-              ])
-            ]),
+                Padding(padding: EdgeInsets.only(bottom: 10)),
+                Row(children: <Widget>[
+                  Expanded(
+                      child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 8,
+                        decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            hintText: "..."),
+                  )),
+                ])
+              ]),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -190,7 +231,9 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
           if (index == 0) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyHomePage(title: 'Flutter Demo Home Page')),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MyHomePage(title: 'Flutter Demo Home Page')),
             );
           } else if (index == 1) {
             Navigator.push(
@@ -239,7 +282,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CreateRecipeRoute()),
+                    MaterialPageRoute(
+                        builder: (context) => CreateRecipeRoute()),
                   );
                 },
                 child: Text('open page 2'))
