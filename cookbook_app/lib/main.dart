@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:developer';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,15 +15,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Yum Binder'),
@@ -32,19 +26,327 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
+}
+
+class CreateRecipeRoute extends StatefulWidget {
+  @override
+  _CreateRecipeState createState() => _CreateRecipeState();
+}
+
+class FinishRecipeRoute extends StatefulWidget {
+  @override
+  _FinishRecipeState createState() => _FinishRecipeState();
+}
+
+class _FinishRecipeState extends State<FinishRecipeRoute> {
+  bool checkboxCalories = false;
+  bool checkboxPublic = false;
+  String dropdownTags = 'None';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Create a Recipe"),
+      ),
+      body: Center(
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(width: 0.0, height: 0.0),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          "Add Tags",
+                          style: TextStyle(
+                            fontSize: 24.0,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 4,
+                          child: DropdownButton<String>(
+                            value: dropdownTags,
+                            icon: Icon(Icons.arrow_drop_down),
+                            iconSize: 50,
+                            style: TextStyle(color: Colors.black, fontSize: 20),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                dropdownTags = newValue;
+                              });
+                            },
+                            items: <String>['None', 'Breakfast', 'Dinner']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ))
+                    ]),
+                    Padding(padding: EdgeInsets.only(bottom: 30)),
+                    Row(children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(width: 0.0, height: 0.0),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          "Add Calories",
+                          style: TextStyle(
+                            fontSize: 24.0,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 4,
+                          child: Transform.scale(
+                              scale: 1.4,
+                              child: Checkbox(
+                                value: checkboxCalories,
+                                onChanged: (value) {
+                                  setState(() {
+                                    checkboxCalories = !checkboxCalories;
+                                  });
+                                },
+                              )))
+                    ]),
+                    Padding(padding: EdgeInsets.only(bottom: 30)),
+                    Row(children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(width: 0.0, height: 0.0),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          "Make Public",
+                          style: TextStyle(
+                            fontSize: 24.0,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 4,
+                          child: Transform.scale(
+                              scale: 1.4,
+                              child: Checkbox(
+                                value: checkboxPublic,
+                                onChanged: (value) {
+                                  setState(() {
+                                    checkboxPublic = !checkboxPublic;
+                                  });
+                                },
+                              )))
+                    ]),
+                  ]))),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.arrow_back), label: "Back"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.arrow_forward), label: "Finish"),
+        ],
+        onTap: (int index) {
+          if (index == 0) {
+            Navigator.pop(context);
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MyHomePage(title: 'Flutter Demo Home Page')),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+class _CreateRecipeState extends State<CreateRecipeRoute> {
+  File _image;
+
+  void _showPicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  _imgFromCamera() async {
+    File image = (await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50)) as File;
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _imgFromGallery() async {
+    File image = (await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50)) as File;
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Create a Recipe"),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(children: <Widget>[
+                  Expanded(
+                      flex: 5,
+                      child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration:
+                            InputDecoration(hintText: "Enter Recipe Name"),
+                      )),
+                  Expanded(
+                    flex: 1,
+                    child: Container(width: 0.0, height: 0.0),
+                  ),
+                  Expanded(
+                      flex: 4,
+                      child: GestureDetector(
+                          onTap: () {
+                            _showPicker(context);
+                          },
+                          child: CircleAvatar(
+                            child: _image != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.file(
+                                      _image,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    width: 100,
+                                    height: 100,
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.grey[800],
+                                    ),
+                                  ),
+                          )))
+                ]),
+                Padding(padding: EdgeInsets.only(bottom: 20)),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Ingredients",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    )),
+                Padding(padding: EdgeInsets.only(bottom: 10)),
+                Row(children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 8,
+                      decoration: InputDecoration(
+                          border: const OutlineInputBorder(), hintText: "..."),
+                    ),
+                  )
+                ]),
+                Padding(padding: EdgeInsets.only(bottom: 20)),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Instructions",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    )),
+                Padding(padding: EdgeInsets.only(bottom: 10)),
+                Row(children: <Widget>[
+                  Expanded(
+                      child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 8,
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(), hintText: "..."),
+                  )),
+                ])
+              ]),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.arrow_back), label: "Back"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.arrow_forward), label: "Next"),
+        ],
+        onTap: (int index) {
+          if (index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MyHomePage(title: 'Flutter Demo Home Page')),
+            );
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FinishRecipeRoute()),
+            );
+          }
+        },
+      ),
+    );
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -73,16 +375,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
@@ -96,6 +390,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             DrawerHeader(
               child: Text('Yum Binder'),
@@ -131,6 +427,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 // ...
               },
             ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateRecipeRoute()),
+                  );
+                },
+                child: Text('open page 2'))
           ],
         ),
       ),
@@ -138,7 +443,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: printTest,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
 
 
