@@ -390,8 +390,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        //child: Column(
           children: <Widget>[
             DrawerHeader(
               child: Text('Yum Binder'),
