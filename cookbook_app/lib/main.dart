@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'dart:developer';
 import 'package:image_picker/image_picker.dart';
 
 void main() {
@@ -16,9 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Yum Binder'),
     );
   }
+
 }
 
 class MyHomePage extends StatefulWidget {
@@ -348,17 +350,27 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  void printTest(){
+    log(' Go to create recipe?');
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Widget getListView() {
+    return ListView(
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.folder),
+          title: Text('Dessert'),
+        ),
+        ListTile(
+          leading: Icon(Icons.folder),
+          title: Text('Breakfast'),
+        ),
+        ListTile(
+          leading: Icon(Icons.circle),
+          title: Text('Steak'),
+        ),
+      ],
+    );
   }
 
   @override
@@ -368,15 +380,51 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: getListView(),
+      ),
+      drawer: Drawer(  // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+        //child: Column(
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            DrawerHeader(
+              child: Text('Yum Binder'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            ListTile(
+              title: Text('Public Recipes'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Share a Recipe'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Update Folders'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Logout'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
             ),
             ElevatedButton(
                 onPressed: () {
@@ -391,10 +439,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: printTest,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
     );
+
+
+
+
   }
 }
