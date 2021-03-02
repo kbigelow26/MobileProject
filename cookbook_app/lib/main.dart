@@ -351,9 +351,6 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void printTest(){
-    log(' Go to create recipe?');
-  }
 
   Widget getListView() {
     return ListView(
