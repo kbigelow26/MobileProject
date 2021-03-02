@@ -421,33 +421,36 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
+              title: Text('Create a Recipe'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateRecipeRoute()),
+                );
+              },
+            ),
+            ListTile(
               title: Text('Logout'),
               onTap: () {
                 // Update the state of the app.
                 // ...
               },
             ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CreateRecipeRoute()),
-                  );
-                },
-                child: Text('open page 2'))
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: printTest,
-        tooltip: 'Increment',
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CreateRecipeRoute()),
+          );
+        },
+        tooltip: 'Go to Create Recipe',
         child: Icon(Icons.add),
       ),
     );
-
-
-
-
   }
 }
