@@ -1,3 +1,4 @@
+import 'package:cookbook_app/reorderList.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import './main.dart' as homeScreen;
@@ -8,29 +9,8 @@ class UpdateFoldersRoute extends StatefulWidget {
 }
 
 class _UpdateFoldersState extends State<UpdateFoldersRoute> {
-  Widget getListView() {
-    return ListView(
-      children: <Widget>[
-        ListTile(
-          leading: Icon(Icons.folder_outlined),
-          title: Text('Dessert'),
-          trailing: Icon(Icons.reorder),
-        ),
-        ListTile(
-          leading: Icon(Icons.folder_outlined),
-          title: Text('Breakfast'),
-          trailing: Icon(Icons.reorder),
-        ),
-        ListTile(
-          leading: Icon(Icons.text_snippet_outlined),
-          title: Text('Steak'),
-          trailing: Icon(Icons.reorder),
-        ),
-      ],
-    );
-  }
 
-  _openAddFolder(context){
+  _openAddFolder(context) {
     Alert(
         context: context,
         title: "Add Folder",
@@ -60,9 +40,7 @@ class _UpdateFoldersState extends State<UpdateFoldersRoute> {
       appBar: AppBar(
         title: Text('Update Folders'),
       ),
-      body: Center(
-        child: getListView(),
-      ),
+      body: reorderList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _openAddFolder(context);
@@ -87,7 +65,8 @@ class _UpdateFoldersState extends State<UpdateFoldersRoute> {
           } else if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => homeScreen.MyHomePage(title: 'Yum Binder')),
+              MaterialPageRoute(builder: (context) =>
+                  homeScreen.MyHomePage(title: 'Yum Binder')),
             );
           }
         },
