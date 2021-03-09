@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import './main.dart' as homeScreen;
 
 class UpdateFoldersRoute extends StatefulWidget {
@@ -29,6 +30,30 @@ class _UpdateFoldersState extends State<UpdateFoldersRoute> {
     );
   }
 
+  _openAddFolder(context){
+    Alert(
+        context: context,
+        title: "Add Folder",
+        content: Column(
+          children: <Widget>[
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'Name',
+              ),
+            ),
+          ],
+        ),
+        buttons: [
+          DialogButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Create",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,13 +65,9 @@ class _UpdateFoldersState extends State<UpdateFoldersRoute> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => homeScreen.MyHomePage(title: 'Yum Binder')),
-          );
+          _openAddFolder(context);
         },
-        tooltip: 'Go to Create Recipe',
+        tooltip: 'Add Folder',
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
