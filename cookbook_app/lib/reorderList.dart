@@ -113,7 +113,7 @@ class _reorderListState extends State<reorderList> {
                   Text("Rename")
               ),
               PopupMenuItem(
-                  value: 1,
+                  value: 2,
                   child:
                   Text("Delete")
               ),
