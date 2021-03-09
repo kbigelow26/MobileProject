@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import './createRecipeScreen.dart' as createRecipeScreen;
+import './updateFoldersScreen.dart' as updateFoldersScreen;
+
 
 void main() {
   runApp(MyApp());
@@ -46,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text('Breakfast'),
         ),
         ListTile(
-          leading: Icon(Icons.text_snippet_outlined),
+          leading: Icon(Icons.text_snippet),
           title: Text('Steak'),
         ),
       ],
@@ -95,8 +97,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Update Folders'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => updateFoldersScreen.UpdateFoldersRoute()),
+                );
               },
             ),
             ListTile(
