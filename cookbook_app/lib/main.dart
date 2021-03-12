@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer';
 import './createRecipeScreen.dart' as createRecipeScreen;
 import './updateFoldersScreen.dart' as updateFoldersScreen;
-
+import './searchRecipeScreen.dart' as searchRecipeScreen;
 
 void main() {
   runApp(MyApp());
@@ -83,8 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Public Recipes'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => searchRecipeScreen.SearchRecipeRoute()),
+                );
               },
             ),
             ListTile(
