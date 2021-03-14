@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './main.dart' as homeScreen;
+import './RecipeStorage.dart' as RSClass;
 
 class FinishRecipeRoute extends StatefulWidget {
   @override
@@ -129,7 +130,7 @@ class _FinishRecipeState extends State<FinishRecipeRoute> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      homeScreen.MyHomePage(title: 'Yum Binder')),
+                      homeScreen.MyHomePage(title: 'Yum Binder', storage: RSClass.RecipeStorage())),
             );
           }
         },

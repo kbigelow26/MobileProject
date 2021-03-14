@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import './main.dart' as homeScreen;
 import './finishRecipeScreen.dart' as finishRecipeScreen;
-
+import './RecipeStorage.dart' as RSClass;
 
 class CreateRecipeRoute extends StatefulWidget {
   @override
@@ -46,7 +46,7 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
 
   _imgFromCamera() async {
     File image = (await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50)) as File;
+        source: ImageSource.camera, imageQuality: 50));
 
     setState(() {
       _image = image;
@@ -55,7 +55,7 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
 
   _imgFromGallery() async {
     File image = (await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50)) as File;
+        source: ImageSource.gallery, imageQuality: 50));
 
     setState(() {
       _image = image;
@@ -173,7 +173,7 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      homeScreen.MyHomePage(title: 'Yum Binder')),
+                      homeScreen.MyHomePage(title: 'Yum Binder', storage: RSClass.RecipeStorage())),
             );
           } else if (index == 1) {
             Navigator.push(

@@ -2,6 +2,7 @@ import 'package:cookbook_app/reorderList.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import './main.dart' as homeScreen;
+import './RecipeStorage.dart' as RSClass;
 
 class UpdateFoldersRoute extends StatefulWidget {
   @override
@@ -60,13 +61,13 @@ class _UpdateFoldersState extends State<UpdateFoldersRoute> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      homeScreen.MyHomePage(title: 'Yum Binder')),
+                      homeScreen.MyHomePage(title: 'Yum Binder', storage: RSClass.RecipeStorage())),
             );
           } else if (index == 1) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) =>
-                  homeScreen.MyHomePage(title: 'Yum Binder')),
+                  homeScreen.MyHomePage(title: 'Yum Binder', storage: RSClass.RecipeStorage())),
             );
           }
         },
