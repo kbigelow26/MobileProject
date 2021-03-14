@@ -1,0 +1,73 @@
+FireBase - Cloud Firestore Structure
+
+
+Collection |     Recipes           |    Fields
+
+Recipe           RecipeId               calories true
+                                        image ""..""
+                                        ingredients "..."
+                                        instructions "..."
+                                        name "..."
+                                        path ""..""
+                                        public true
+                                        tags "..."
+                                        type "..."
+
+
+
+
+Code for Firebase Integration:
+
+// Refer to Part 3 of Flutter Warmup for complete example
+
+import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+class Record {
+  final String name;
+  final String type;
+  final String tags;
+  final String path;
+  final String instructions;
+  final String ingredients;
+  final String image;
+
+  final bool public;
+  final bool calories;
+
+
+  final DocumentReference reference;
+
+  Record.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['name'] != null),
+        assert(map['type'] != null),
+        assert(map['tags'] != null),
+        assert(map['public'] != null),
+        assert(map['path'] != null),
+        assert(map['instructions'] != null),
+        assert(map['ingredients'] != null),
+        assert(map['image'] != null),
+        assert(map['calories'] != null),
+        name = map['name'],
+        type = map['type'],
+        tags = map['tags'],
+        public = map['public'],
+        path = map['path'],
+        instructions = map['instructions'],
+        ingredients = map['ingredients'],
+        image = map['image'],
+        calories = map['calories'];
+
+  Record.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data(), reference: snapshot.reference);
+
+  @override
+  String toString() => "Record<$name:$votes>";
+}

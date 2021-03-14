@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './createRecipeScreen.dart' as createRecipeScreen;
 import './updateFoldersScreen.dart' as updateFoldersScreen;
 import './RecipeStorage.dart' as RSClass;
+import './searchRecipeScreen.dart' as searchRecipeScreen;
 
 void main() {
   runApp(MyApp());
@@ -82,8 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     ListTile(
                       title: Text('Public Recipes'),
                       onTap: () {
-                        // Update the state of the app.
-                        // ...
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => searchRecipeScreen.SearchRecipeRoute()),
+                        );
                       },
                     ),
                     ListTile(
@@ -152,7 +156,6 @@ class _MyHomePageState extends State<MyHomePage> {
           .values
           .toList());
     } else {
-      print("WHAAAAAAAAAAAAATTTTTTTTTT");
       print(allFiles);
       print("ok");
       List curr = RSClass.RecipeStorage.getFilesInFolder(allFiles, view);
