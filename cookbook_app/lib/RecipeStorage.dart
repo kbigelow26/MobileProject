@@ -22,7 +22,28 @@ class RecipeStorage {
     return file.writeAsString('$info');
   }
 
-  Future<String> readRecipe(String filename) async {
+  static Future<int> deleteFile(String fileName) async{
+    try {
+      final file = await _localFile(fileName);
+      var temp = await file.delete();
+      return 1;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  static Future<int> renameFolder(String fileName, String newFileName) async{
+    try {
+      var delete = await deleteFile(fileName);
+      var make = generateFolder(newFileName);
+      //TODO : rename all files in folder
+      return 1;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  static Future<String> readRecipe(String filename) async {
     try {
       final file = await _localFile('$filename');
       String contents = await file.readAsString();
@@ -102,19 +123,23 @@ class RecipeStorage {
       bool public,
       String image,
       String path) {
-    var info = {
-      "type": "file",
-      "name": '$name',
-      "ingredients": '$ingredients',
-      "instructions": '$instructions',
-      "calories": '$calories',
-      "tags": '$tags',
-      "public": '$public',
-      "image": '$image',
-      "path": '$path'
-    };
-    writeRecipe(info);
-    return info;
+    try {
+      var info = {
+        "type": "file",
+        "name": '$name',
+        "ingredients": '$ingredients',
+        "instructions": '$instructions',
+        "calories": '$calories',
+        "tags": '$tags',
+        "public": '$public',
+        "image": '$image',
+        "path": '$path'
+      };
+      writeRecipe(info);
+      return info;
+    } catch (e) {
+      return null;
+    }
   }
 
    static Map generateFolder(String name) {
@@ -123,6 +148,12 @@ class RecipeStorage {
                 "order": 1};
     writeFolder(info);
     return info;
+  }
+
+  static int deleteFolder(String name) {
+    var j = deleteFile(name);
+    print(j);
+    return 1;
   }
 
 }

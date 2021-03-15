@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import './main.dart' as homeScreen;
@@ -13,6 +14,18 @@ class CreateRecipeRoute extends StatefulWidget {
 
 class _CreateRecipeState extends State<CreateRecipeRoute> {
   File _image;
+  final _formKey = GlobalKey<FormState>();
+  final titleController = TextEditingController();
+  final ingredController = TextEditingController();
+  final instructController = TextEditingController();
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    ingredController.dispose();
+    instructController.dispose();
+    super.dispose();
+  }
 
   void _showPicker(BuildContext context) {
     showModalBottomSheet(
@@ -70,94 +83,122 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(children: <Widget>[
-                    Expanded(
-                        flex: 5,
-                        child: TextField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          decoration:
-                          InputDecoration(hintText: "Enter Recipe Name"),
-                        )),
-                    Expanded(
-                      flex: 1,
-                      child: Container(width: 0.0, height: 0.0),
-                    ),
-                    Expanded(
-                        flex: 4,
-                        child: GestureDetector(
-                            onTap: () {
-                              _showPicker(context);
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      Expanded(
+                          flex: 5,
+                          child: TextFormField(
+                            controller: titleController,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            decoration:
+                                InputDecoration(hintText: "Enter Recipe Name"),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter a title';
+                              } else {
+                                return null;
+                              }
                             },
-                            child: ClipRRect(
-                              child: _image != null
-                                  ? ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.file(
-                                  _image,
-                                  width: 200,
-                                  height: 200,
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              )
-                                  : Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.grey[200]),
-                                width: 200,
-                                height: 200,
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.grey[800],
-                                ),
-                              ),
-                            )))
-                  ]),
-                  Padding(padding: EdgeInsets.only(bottom: 20)),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Ingredients",
-                        style: TextStyle(
-                          fontSize: 18.0,
+                          )),
+                      Expanded(
+                        flex: 1,
+                        child: Container(width: 0.0, height: 0.0),
+                      ),
+                      Expanded(
+                          flex: 4,
+                          child: GestureDetector(
+                              onTap: () {
+                                _showPicker(context);
+                              },
+                              child: ClipRRect(
+                                child: _image != null
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Image.file(
+                                          _image,
+                                          width: 200,
+                                          height: 200,
+                                          fit: BoxFit.fitHeight,
+                                        ),
+                                      )
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[200]),
+                                        width: 200,
+                                        height: 200,
+                                        child: Icon(
+                                          Icons.camera_alt,
+                                          color: Colors.grey[800],
+                                        ),
+                                      ),
+                              )))
+                    ]),
+                    Padding(padding: EdgeInsets.only(bottom: 20)),
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Ingredients",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                          ),
+                        )),
+                    Padding(padding: EdgeInsets.only(bottom: 10)),
+                    Row(children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                          controller: ingredController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 8,
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              hintText: "..."),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter Ingredients';
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
-                      )),
-                  Padding(padding: EdgeInsets.only(bottom: 10)),
-                  Row(children: <Widget>[
-                    Expanded(
-                      child: TextField(
+                      )
+                    ]),
+                    Padding(padding: EdgeInsets.only(bottom: 20)),
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Instructions",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                          ),
+                        )),
+                    Padding(padding: EdgeInsets.only(bottom: 10)),
+                    Row(children: <Widget>[
+                      Expanded(
+                          child: TextFormField(
+                        controller: instructController,
                         keyboardType: TextInputType.multiline,
                         maxLines: 8,
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             hintText: "..."),
-                      ),
-                    )
-                  ]),
-                  Padding(padding: EdgeInsets.only(bottom: 20)),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Instructions",
-                        style: TextStyle(
-                          fontSize: 18.0,
-                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter Instructions';
+                          } else {
+                            return null;
+                          }
+                        },
                       )),
-                  Padding(padding: EdgeInsets.only(bottom: 10)),
-                  Row(children: <Widget>[
-                    Expanded(
-                        child: TextField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 8,
-                          decoration: InputDecoration(
-                              border: const OutlineInputBorder(), hintText: "..."),
-                        )),
-                  ])
-                ]),
+                    ])
+                  ]),
+            ),
           ),
         ),
       ),
@@ -172,14 +213,20 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      homeScreen.MyHomePage(title: 'Yum Binder', storage: RSClass.RecipeStorage())),
+                  builder: (context) => homeScreen.MyHomePage(
+                      title: 'Yum Binder', storage: RSClass.RecipeStorage())),
             );
           } else if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => finishRecipeScreen.FinishRecipeRoute()),
-            );
+            if (_formKey.currentState.validate()) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => finishRecipeScreen.FinishRecipeRoute(
+                        title: titleController.text,
+                        ingredients: ingredController.text,
+                        instructions: instructController.text)),
+              );
+            }
           }
         },
       ),

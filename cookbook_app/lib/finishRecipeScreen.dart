@@ -3,6 +3,11 @@ import './main.dart' as homeScreen;
 import './RecipeStorage.dart' as RSClass;
 
 class FinishRecipeRoute extends StatefulWidget {
+  FinishRecipeRoute({Key key, this.title, this.ingredients, this.instructions})
+      : super(key: key);
+
+  final String title, ingredients, instructions;
+
   @override
   _FinishRecipeState createState() => _FinishRecipeState();
 }
@@ -126,11 +131,21 @@ class _FinishRecipeState extends State<FinishRecipeRoute> {
           if (index == 0) {
             Navigator.pop(context);
           } else if (index == 1) {
+            RSClass.RecipeStorage.generateRecipe(
+                widget.title,
+                widget.ingredients,
+                widget.instructions,
+                checkboxCalories,
+                "stuff and things",
+                checkboxPublic,
+                "IMAGE",
+                "null");
             Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      homeScreen.MyHomePage(title: 'Yum Binder', storage: RSClass.RecipeStorage())),
+                      homeScreen.MyHomePage(title: 'Yum Binder',
+                          storage: RSClass.RecipeStorage())),
             );
           }
         },

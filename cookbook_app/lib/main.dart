@@ -3,6 +3,7 @@ import './createRecipeScreen.dart' as createRecipeScreen;
 import './updateFoldersScreen.dart' as updateFoldersScreen;
 import './RecipeStorage.dart' as RSClass;
 import './searchRecipeScreen.dart' as searchRecipeScreen;
+import './viewFolderScreen.dart' as viewFolderScreen;
 
 void main() {
   runApp(MyApp());
@@ -56,15 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
               appBar: AppBar(
                 title: Text(widget.title),
               ),
-              body: Center(
-                  // Center is a layout widget. It takes a single child and positions it
-                  // in the middle of the parent.
-                  child: Column(children: [
-                Container(
-                    height: 44,
-                    child: ListView(children: getListItemsFolders())),
-                Container(height: 44, child: ListView(children: getListItems()))
-              ])),
+              body: Column( mainAxisAlignment: MainAxisAlignment.center, children: [
+                    SizedBox(height:250,child: ListView(children: getListItemsFolders())),
+                    Expanded(child:ListView(children: getListItems())),
+                  ]),
+
               drawer: Drawer(
                 // Add a ListView to the drawer. This ensures the user can scroll
                 // through the options in the drawer if there isn't enough vertical
@@ -84,9 +81,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       title: Text('Public Recipes'),
                       onTap: () {
                         Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => searchRecipeScreen.SearchRecipeRoute()),
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  searchRecipeScreen.SearchRecipeRoute()),
                         );
                       },
                     ),
@@ -104,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  updateFoldersScreen.UpdateFoldersRoute()),
+                                  updateFoldersScreen.UpdateFoldersRoute(folders: allFolders, allFiles: allFiles)),
                         );
                       },
                     ),
@@ -184,6 +182,14 @@ class _MyHomePageState extends State<MyHomePage> {
       key: ValueKey(item),
       title: Text(item),
       leading: Icon(Icons.folder_outlined),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => viewFolderScreen.ViewFolderRoute(
+                  folder: item, allFiles: allFiles)),
+        );
+      },
     );
   }
 
