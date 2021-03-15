@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.1
   image_picker: ^0.6.6+5
   rflutter_alert: ^1.0.3
+  path_provider: ^1.6.27
   textfield_tags: ^1.1.1
 
 dev_dependencies:
