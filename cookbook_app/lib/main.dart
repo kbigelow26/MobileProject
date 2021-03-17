@@ -1,9 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import './createRecipeScreen.dart' as createRecipeScreen;
 import './updateFoldersScreen.dart' as updateFoldersScreen;
 import './RecipeStorage.dart' as RSClass;
 import './searchRecipeScreen.dart' as searchRecipeScreen;
 import './viewFolderScreen.dart' as viewFolderScreen;
+import './viewExistingRecipe.dart' as viewExistingRecipeScreen;
+
+import 'dart:convert';
 
 void main() {
   runApp(MyApp());
@@ -25,8 +30,9 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   final RSClass.RecipeStorage storage;
+  final String deleteFilePath;
 
-  MyHomePage({Key key, this.title, @required this.storage}) : super(key: key);
+  MyHomePage({Key key, this.title,  this.deleteFilePath, @required this.storage}) : super(key: key);
 
   final String title;
 
@@ -193,11 +199,22 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  @override
   ListTile buildListTile(String item, int index) {
+
     return ListTile(
       key: ValueKey(item),
       title: Text(item.split("-")[1]),
       leading: Icon(Icons.text_snippet),
+
+      onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => viewExistingRecipeScreen.ViewExistingRecipe(
+                    name: item, storage: RSClass.RecipeStorage())),
+          );
+      },
     );
   }
 }
