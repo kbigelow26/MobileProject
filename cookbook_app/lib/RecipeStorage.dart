@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
@@ -24,8 +25,11 @@ class RecipeStorage {
 
   static Future<int> deleteFile(String fileName) async{
     try {
-      final file = await _localFile(fileName);
-      var temp = await file.delete();
+      var temp = fileName.toString();
+      var temp2 = temp.split("/");
+      var curr = temp2[temp2.length-1];
+      final file = await _localFile('$curr');
+      var tempy = await file.delete();
       return 1;
     } catch (e) {
       return 0;
@@ -43,10 +47,16 @@ class RecipeStorage {
     }
   }
 
-  static Future<String> readRecipe(String filename) async {
+  Future<String> readRecipe(String filename) async {
+    print("entered: "+ filename);
     try {
-      final file = await _localFile('$filename');
+      var temp = filename.toString();
+      var temp2 = temp.split("/");
+      var curr = temp2[temp2.length-1];
+      final file = await _localFile('$curr');
+      print("Awaited: "+ file.toString());
       String contents = await file.readAsString();
+      //print()
       return contents;
     } catch (e) {
       return null;
