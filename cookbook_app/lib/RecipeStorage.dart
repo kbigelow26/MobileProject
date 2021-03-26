@@ -48,15 +48,12 @@ class RecipeStorage {
   }
 
   Future<String> readRecipe(String filename) async {
-    print("entered: "+ filename);
     try {
       var temp = filename.toString();
       var temp2 = temp.split("/");
       var curr = temp2[temp2.length-1];
       final file = await _localFile('$curr');
-      print("Awaited: "+ file.toString());
       String contents = await file.readAsString();
-      //print()
       return contents;
     } catch (e) {
       return null;
