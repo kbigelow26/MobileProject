@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import './main.dart' as homeScreen;
 import './finishRecipeScreen.dart' as finishRecipeScreen;
 import './RecipeStorage.dart' as RSClass;
@@ -35,6 +36,40 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
     ingredController.dispose();
     instructController.dispose();
     super.dispose();
+  }
+
+  _openDeleteRecipe(context, String recipeName, String folder) {
+    Alert(
+        context: context,
+        title: "Are you sure you want to delete?",
+        buttons: [
+          DialogButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+          DialogButton(
+            onPressed: () async {
+              var check =
+              await RSClass.RecipeStorage.deleteFile(folder+"-" + recipeName);
+              setState(() {
+
+              });
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => homeScreen.MyHomePage(
+                        title: 'Yum Binder', storage: RSClass.RecipeStorage())),
+              );
+            },
+            child: Text(
+              "Yes",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
   }
 
   void _showPicker(BuildContext context) {
@@ -112,7 +147,9 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
               public = false;
             }
             instructions = tokenHelper[1];
-            return Scaffold(
+            var tempValue = value.data.split("path: ");
+            var recipeFolder = tempValue[1].substring(0, tempValue[1].length -1);
+          return Scaffold(
               appBar: AppBar(
                 title: Text(recipeName),
               ),
@@ -148,8 +185,7 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                     ListTile(
                       title: Text('Delete'),
                       onTap: () {
-                        // Update the state of the app.
-                        // ...
+                        _openDeleteRecipe(context, recipeName, recipeFolder);
                       },
                     ),
                     ListTile(
