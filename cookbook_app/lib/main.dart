@@ -65,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               body: Column( mainAxisAlignment: MainAxisAlignment.center, children: [
                     SizedBox(height:250,child: ListView(children: getListItemsFolders())),
+                    Divider(thickness: 2,),
                     Expanded(child:ListView(children: getListItems())),
                   ]),
 
