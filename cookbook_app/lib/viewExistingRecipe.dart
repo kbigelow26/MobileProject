@@ -58,7 +58,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                     leading: new Icon(Icons.photo_camera),
                     title: new Text('Camera'),
                     onTap: () {
-                      //log('print it: '+ widget.name);
                     },
                   ),
               //  */
@@ -112,7 +111,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             } else {
               public = false;
             }
-            log("PRINT THESE: "+instructions);
             instructions = tokenHelper[1];
             return Scaffold(
               appBar: AppBar(
