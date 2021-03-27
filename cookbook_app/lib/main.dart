@@ -192,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
           context,
           MaterialPageRoute(
               builder: (context) => viewFolderScreen.ViewFolderRoute(
-                  folder: item, allFiles: allFiles)),
+                  folder: item, allFiles: allFiles, allFolders: allFolders,)),
         );
       },
     );
