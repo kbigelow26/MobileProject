@@ -14,7 +14,6 @@ class ViewFolderRoute extends StatefulWidget {
 
 class _ViewFolderState extends State<ViewFolderRoute> {
   List recipes;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +54,7 @@ class _ViewFolderState extends State<ViewFolderRoute> {
         RSClass.RecipeStorage.getFilesInFolder(widget.allFiles, widget.folder);
     print(recipes);
     if (recipes.isNotEmpty) {
-      recipes
+      return recipes
           .asMap()
           .map((i, item) => MapEntry(i, buildListTile(item, i)))
           .values
