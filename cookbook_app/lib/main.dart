@@ -161,8 +161,6 @@ class _MyHomePageState extends State<MyHomePage> {
           .values
           .toList());
     } else {
-      print(allFiles);
-      print("ok");
       List curr = RSClass.RecipeStorage.getFilesInFolder(allFiles, view);
       curr
           .asMap()
@@ -194,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
           context,
           MaterialPageRoute(
               builder: (context) => viewFolderScreen.ViewFolderRoute(
-                  folder: item, allFiles: allFiles)),
+                  folder: item, allFiles: allFiles, allFolders: allFolders,)),
         );
       },
     );
@@ -213,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => viewExistingRecipeScreen.ViewExistingRecipe(
-                    name: item, storage: RSClass.RecipeStorage())),
+                    name: item, storage: RSClass.RecipeStorage(), allFolders: allFolders,)),
           );
       },
     );

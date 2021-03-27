@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import './main.dart' as homeScreen;
 import './RecipeStorage.dart' as RSClass;
+import './viewExistingRecipe.dart' as viewExistingRecipeScreen;
 
 class ViewFolderRoute extends StatefulWidget {
-  ViewFolderRoute({Key key, this.folder, this.allFiles}) : super(key: key);
+  ViewFolderRoute({Key key, this.folder, this.allFiles, this.allFolders}) : super(key: key);
 
   final String folder;
   final List allFiles;
+  final List allFolders;
 
   @override
   _ViewFolderState createState() => _ViewFolderState();
@@ -14,12 +16,11 @@ class ViewFolderRoute extends StatefulWidget {
 
 class _ViewFolderState extends State<ViewFolderRoute> {
   List recipes;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Yum Binder"),
+        title: Text(widget.folder),
       ),
       body: Center(
           child: Padding(
@@ -53,9 +54,8 @@ class _ViewFolderState extends State<ViewFolderRoute> {
   List<ListTile> getListItems() {
     recipes =
         RSClass.RecipeStorage.getFilesInFolder(widget.allFiles, widget.folder);
-    print(recipes);
     if (recipes.isNotEmpty) {
-      recipes
+      return recipes
           .asMap()
           .map((i, item) => MapEntry(i, buildListTile(item, i)))
           .values
@@ -74,6 +74,14 @@ class _ViewFolderState extends State<ViewFolderRoute> {
       key: ValueKey(item),
       title: Text(item.split("-")[1]),
       leading: Icon(Icons.text_snippet),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => viewExistingRecipeScreen.ViewExistingRecipe(
+                name: item, storage: RSClass.RecipeStorage(), allFolders: widget.allFolders,)),
+        );
+      },
     );
   }
 }
