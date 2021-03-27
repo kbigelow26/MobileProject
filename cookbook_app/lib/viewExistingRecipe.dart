@@ -180,7 +180,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
               child: new Wrap(
                 children: <Widget>[
                   // Show some popup of the picture?
-                  // /*
                   new ListTile(
                       leading: new Icon(Icons.photo_library),
                       title: new Text('Photo Library'),
@@ -193,7 +192,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                     title: new Text('Camera'),
                     onTap: () {},
                   ),
-                  //  */
                 ],
               ),
             ),
@@ -255,13 +253,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             if (!widget.allFolders.contains("No folder")) {
               widget.allFolders.add("No folder");
             }
-            // if (recipeFolder == "null") {
-            //   _folderPick = "No folder";
-            //   _folderResult = "No folder";
-            // } else {
-            //   _folderPick = recipeFolder;
-            //   _folderResult = recipeFolder;
-            // }
             return Scaffold(
               appBar: AppBar(
                 title: Text(recipeName),
