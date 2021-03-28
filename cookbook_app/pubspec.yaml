@@ -32,6 +32,8 @@ dependencies:
   rflutter_alert: ^1.0.3
   path_provider: ^1.6.27
   textfield_tags: ^1.1.1
+  http: ^0.12.0+2
+  webview_flutter: ^0.3.17
 
 dev_dependencies:
   flutter_test:
