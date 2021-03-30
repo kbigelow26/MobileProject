@@ -259,7 +259,7 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
           BottomNavigationBarItem(
               icon: Icon(Icons.arrow_forward), label: "Next"),
         ],
-        onTap: (int index) {
+        onTap: (int index) async {
           if (index == 0) {
             Navigator.push(
               context,
@@ -269,13 +269,19 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
             );
           } else if (index == 1) {
             if (_formKey.currentState.validate()) {
+              Directory directory = await getApplicationDocumentsDirectory();
+              String path = directory.path;
+              var filename = _image.toString().split("/");
+              String name = filename[filename.length -1];
+              File newImage = await _image.copy('$path/images/$name');
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => finishRecipeScreen.FinishRecipeRoute(
                         title: titleController.text,
                         ingredients: ingredController.text,
-                        instructions: instructController.text)),
+                        instructions: instructController.text,
+                        image: newImage)),
               );
             }
           }
