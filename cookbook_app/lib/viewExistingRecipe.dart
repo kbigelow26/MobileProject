@@ -16,9 +16,10 @@ class ViewExistingRecipe extends StatefulWidget {
   final String name;
   final RSClass.RecipeStorage storage;
   List allFolders;
+  File image;
 
   ViewExistingRecipe(
-      {Key key, this.name, @required this.storage, this.allFolders})
+      {Key key, this.name, @required this.storage, this.allFolders, this.image})
       : super(key: key);
 
   @override
@@ -217,12 +218,17 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
     });
   }
 
+  _setImgState(String imgStr) async {
+      _image =  File(imgStr);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: widget.storage.readRecipe(widget.name),
         builder: (context, AsyncSnapshot<String> value) {
           if (value.hasData) {
+            print("View Recipe contents: "+value.data);
             var tempStr = value.data.split(', ingredients:');
             var recipeName = tempStr[0].replaceAll('{type: file, name: ', '');
             var helperToken = tempStr[1];
@@ -247,6 +253,26 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             var tags = tempValue.substring(0, tempValue.indexOf(", public: "));
             tempValue = value.data.split("image: ")[1];
             var image = tempValue.substring(0, tempValue.indexOf(", path:"));
+            image = image.substring(7, image.length);
+            while (image.endsWith("'")) {
+              image = image.substring(0, image.length - 1);
+            }
+            _setImgState(image);
+            print("Image: "+image);
+
+            print('START OF FILES:');
+            var dir = new Directory('data/user/0/com.testapp.cookbook_app/app_flutter/');
+            List contents = dir.listSync();
+            for (var fileOrDir in contents) {
+              if (fileOrDir is File) {
+                print(fileOrDir);
+              } else if (fileOrDir is Directory) {
+                print(fileOrDir.path);
+              }
+            }
+            print('END OF FILES:');
+
+
             tempValue = value.data.split("path: ")[1];
             var recipeFolder =
                 tempValue.substring(0, tempValue.length - 1);
