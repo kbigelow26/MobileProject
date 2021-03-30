@@ -112,7 +112,7 @@ class RecipeStorage {
         var temp2 = temp.split("/");
         var curr = temp2[temp2.length-1];
         if(curr.startsWith('$folder'+'-')){
-          files.add(curr);
+          files.add(curr.replaceAll("'", ""));
         }
       }
       return files;
