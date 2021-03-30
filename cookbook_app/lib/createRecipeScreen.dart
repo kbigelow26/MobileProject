@@ -119,9 +119,6 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
           });
     }
 
-
-
-
   }
 
 
@@ -273,7 +270,11 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
               String path = directory.path;
               var filename = _image.toString().split("/");
               String name = filename[filename.length -1];
-              File newImage = await _image.copy('$path/images/$name');
+              while (name.endsWith("'")) {
+                name = name.substring(0, name.length - 1);
+              }
+              File newImage = await _image.copy('$path/$name');
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
