@@ -172,52 +172,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
         ]).show();
   }
 
-  void _showPicker(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  // Show some popup of the picture?
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Photo Library'),
-                      onTap: () {
-                        _imgFromGallery();
-                        Navigator.of(context).pop();
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-  _imgFromCamera() async {
-    File image = (await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50));
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  _imgFromGallery() async {
-    File image = (await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50));
-
-    setState(() {
-      _image = image;
-    });
-  }
-
   _setImgState(String imgStr) async {
       _image =  File(imgStr);
   }
@@ -311,7 +265,8 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                       instructions: instructions,
                                       filePath: widget.name,
                                       calorie: calorie,
-                                      public: public)),
+                                      public: public,
+                                      image: image)),
                         );
                       },
                     ),
@@ -374,7 +329,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                   flex: 4,
                                   child: GestureDetector(
                                       onTap: () {
-                                        _showPicker(context);
                                       },
                                       child: ClipRRect(
                                         child: _image != null
