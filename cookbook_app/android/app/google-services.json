@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "273886200585",
+    "firebase_url": "https://yum-binder-default-rtdb.firebaseio.com",
+    "project_id": "yum-binder",
+    "storage_bucket": "yum-binder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273886200585:android:3ce9276b2f7c6b309fc9d8",
+        "android_client_info": {
+          "package_name": "com.testapp.cookbook_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273886200585-7qqkaltgfdonk3njrjcd6rnk6m1gs8n7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYz75ZLPdOREt5YcrTkgJfyXmzS8QzHDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273886200585-7qqkaltgfdonk3njrjcd6rnk6m1gs8n7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
