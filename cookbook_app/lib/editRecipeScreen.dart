@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import './main.dart' as homeScreen;
 import './finishEditRecipeScreen.dart' as finishEditRecipeScreen;
 import './RecipeStorage.dart' as RSClass;
+import './ApiHelper.dart' as spoonApi;
 
 class EditRecipeRoute extends StatefulWidget {
 
@@ -16,9 +18,10 @@ class EditRecipeRoute extends StatefulWidget {
   final RSClass.RecipeStorage storage;
   final bool calorie;
   final bool public;
+  final String image;
 
   EditRecipeRoute({Key key, this.name, this.ingredients, this.instructions, this.filePath,
-    this.calorie, this.public,  @required this.storage}) : super(key: key);
+    this.calorie, this.public, this.image, @required this.storage}) : super(key: key);
 
   @override
   _EditRecipeState createState() => _EditRecipeState();
@@ -62,6 +65,13 @@ class _EditRecipeState extends State<EditRecipeRoute> {
                       Navigator.of(context).pop();
                     },
                   ),
+                  new ListTile(
+                      leading: new Icon(Icons.public_rounded),
+                      title: new Text('From the Internet'),
+                      onTap: () {
+                        _imgFromInternet();
+                        //Navigator.of(context).pop();
+                      }),
                 ],
               ),
             ),
@@ -87,11 +97,43 @@ class _EditRecipeState extends State<EditRecipeRoute> {
     });
   }
 
+  _imgFromInternet() async {
+
+    Future<String> resp = spoonApi.searchApiForImg(titleController.text);
+    log(await resp);
+
+    var myFile;
+    myFile = await spoonApi.validateImgResponse(await resp, titleController.text);
+
+    if (myFile != null) {
+      setState(() {
+        _image = myFile;
+      });
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error: No Images Found for Recipe Name'),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text('Okay'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     titleController.text = widget.name;
     ingredController.text = widget.ingredients;
     instructController.text = widget.instructions;
+    _image = File(widget.image);
 
     return Scaffold(
       appBar: AppBar(

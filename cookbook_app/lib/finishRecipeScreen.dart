@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import './main.dart' as homeScreen;
 import './RecipeStorage.dart' as RSClass;
 
 class FinishRecipeRoute extends StatefulWidget {
-  FinishRecipeRoute({Key key, this.title, this.ingredients, this.instructions})
+  FinishRecipeRoute({Key key, this.title, this.ingredients, this.instructions, this.image})
       : super(key: key);
 
   final String title, ingredients, instructions;
+  File image;
 
   @override
   _FinishRecipeState createState() => _FinishRecipeState();
@@ -138,7 +141,7 @@ class _FinishRecipeState extends State<FinishRecipeRoute> {
                 checkboxCalories,
                 "stuff and things",
                 checkboxPublic,
-                "IMAGE",
+                widget.image.toString(),
                 "null");
             Navigator.push(
               context,
