@@ -1,11 +1,18 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import './main.dart' as homeScreen;
 import './finishRecipeScreen.dart' as finishRecipeScreen;
 import './RecipeStorage.dart' as RSClass;
+import 'package:http/http.dart' as http;
+import './ApiHelper.dart' as spoonApi;
+
+
 
 class CreateRecipeRoute extends StatefulWidget {
   @override
@@ -50,6 +57,13 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
                       Navigator.of(context).pop();
                     },
                   ),
+                  new ListTile(
+                      leading: new Icon(Icons.public_rounded),
+                      title: new Text('From the Internet'),
+                      onTap: () {
+                        _imgFromInternet();
+                        //Navigator.of(context).pop();
+                      }),
                 ],
               ),
             ),
@@ -74,6 +88,40 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
       _image = image;
     });
   }
+  
+  _imgFromInternet() async {
+
+    Future<String> resp = spoonApi.searchApiForImg(titleController.text);
+    log(await resp);
+
+    var myFile;
+    myFile = await spoonApi.validateImgResponse(await resp, titleController.text);
+
+    if (myFile != null) {
+      setState(() {
+        _image = myFile;
+      });
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error: No Images Found for Recipe Name'),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text('Okay'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    }
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +256,7 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
           BottomNavigationBarItem(
               icon: Icon(Icons.arrow_forward), label: "Next"),
         ],
-        onTap: (int index) {
+        onTap: (int index) async {
           if (index == 0) {
             Navigator.push(
               context,
@@ -218,13 +266,23 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
             );
           } else if (index == 1) {
             if (_formKey.currentState.validate()) {
+              Directory directory = await getApplicationDocumentsDirectory();
+              String path = directory.path;
+              var filename = _image.toString().split("/");
+              String name = filename[filename.length -1];
+              while (name.endsWith("'")) {
+                name = name.substring(0, name.length - 1);
+              }
+              File newImage = await _image.copy('$path/$name');
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => finishRecipeScreen.FinishRecipeRoute(
                         title: titleController.text,
                         ingredients: ingredController.text,
-                        instructions: instructController.text)),
+                        instructions: instructController.text,
+                        image: newImage)),
               );
             }
           }
