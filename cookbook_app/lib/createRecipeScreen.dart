@@ -97,7 +97,7 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
     var myFile;
     myFile = await spoonApi.validateImgResponse(await resp, titleController.text);
 
-    if (myFile != null) {
+    if (myFile != null && titleController.text.isNotEmpty) {
       setState(() {
         _image = myFile;
       });
