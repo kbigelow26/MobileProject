@@ -101,7 +101,7 @@ class _FinishRecipeState extends State<FinishRecipeRoute> {
                               child: Checkbox(
                                 value: checkboxCalories,
                                 onChanged: (value) {
-                                  setState(() async {
+                                  setState(() {
                                     checkboxCalories = !checkboxCalories;
                                   });
                                 },
