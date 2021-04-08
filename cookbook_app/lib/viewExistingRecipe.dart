@@ -225,7 +225,10 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             var tags = tempValue.substring(0, tempValue.indexOf(", public: "));
             tempValue = value.data.split("image: ")[1];
             var image = tempValue.substring(0, tempValue.indexOf(", path:"));
-            image = image.substring(7, image.length);
+            //print("The image:" +image.toString());
+            if (image.startsWith("File: '")){
+              image = image.substring(7, image.length);
+            }
             while (image.endsWith("'")) {
               image = image.substring(0, image.length - 1);
             }
