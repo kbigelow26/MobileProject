@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'dart:developer';
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import './main.dart' as homeScreen;
 import './RecipeStorage.dart' as RSClass;
+import './ApiHelper.dart' as spoonApi;
 
 class FinishRecipeRoute extends StatefulWidget {
   FinishRecipeRoute({Key key, this.title, this.ingredients, this.instructions, this.image})
@@ -15,10 +18,19 @@ class FinishRecipeRoute extends StatefulWidget {
   _FinishRecipeState createState() => _FinishRecipeState();
 }
 
+_getApiInfo(String title) async {
+
+  Future<String> resp = spoonApi.searchApiForInfo(title);
+  log(await resp);
+  return await resp;
+
+}
+
 class _FinishRecipeState extends State<FinishRecipeRoute> {
   bool checkboxCalories = false;
   bool checkboxPublic = false;
   String dropdownTags = 'None';
+  String calorieInfo = "N/A";
 
   @override
   Widget build(BuildContext context) {

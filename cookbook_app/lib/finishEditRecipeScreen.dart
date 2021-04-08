@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import './main.dart' as homeScreen;
 import './RecipeStorage.dart' as RSClass;
+import './ApiHelper.dart' as spoonApi;
 
 class FinishEditRecipeRoute extends StatefulWidget {
-  final String filePath;
+  final String filePath, image;
   final bool calorie, public;
 
   FinishEditRecipeRoute({Key key, this.title, this.ingredients, this.instructions,
-    this.filePath, this.calorie, this.public})
+    this.filePath, this.calorie, this.public, this.image})
       : super(key: key);
 
   final String title, ingredients, instructions;
@@ -149,7 +150,7 @@ class _FinishEditRecipeState extends State<FinishEditRecipeRoute> {
                 checkboxCalories,
                 "stuff and things",
                 checkboxPublic,
-                "IMAGE",
+                widget.image.toString(),
                 "null");
             Navigator.push(
               context,
