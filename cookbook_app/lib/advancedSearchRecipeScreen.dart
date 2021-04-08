@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './searchRecipeScreen.dart' as searchRecipeScreen;
 import 'package:textfield_tags/textfield_tags.dart';
+import './RecipeStorage.dart' as RSClass;
 
 class SearchRecipeRoute extends StatefulWidget {
   SearchRecipeRoute({Key key, this.allFolders}) : super(key: key);
@@ -14,6 +15,7 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
   final _formKey = GlobalKey<FormState>();
   var nameController = TextEditingController();
   var ingredController = TextEditingController();
+  var ingredients = [];
 
   @override
   void dispose() {
@@ -47,13 +49,6 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
                             maxLines: null,
                             decoration:
                             InputDecoration(hintText: "Name"),
-                            validator: (value){
-                              if (value.isEmpty) {
-                                return 'Please enter search criteria';
-                              } else {
-                                return null;
-                              }
-                            },
                           )),
                     ]),
 
@@ -68,6 +63,7 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
                         )),
                     Padding(padding: EdgeInsets.only(bottom: 10)),
                     TextFieldTags(
+                        initialTags: [],
                         tagsStyler: TagsStyler(
                             tagTextStyle: TextStyle(fontWeight: FontWeight.bold),
                             tagDecoration: BoxDecoration(color: Colors.blue[300], borderRadius: BorderRadius.circular(8.0), ),
@@ -75,8 +71,13 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
                             tagPadding: const EdgeInsets.all(6.0)
                         ),
                         textFieldStyler: TextFieldStyler(hintText: " ", helperText: " "),
-                        onTag: (tag) {},
-                        onDelete: (tag) {}
+                        onTag: (tag) {
+                          print(tag);
+                          ingredients.add(tag);
+                        },
+                        onDelete: (tag) {
+                          ingredients.remove(tag);
+                        }
                     ),
 
                     Padding(padding: EdgeInsets.only(bottom: 20)),
@@ -91,20 +92,33 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
           BottomNavigationBarItem(
               icon: Icon(Icons.arrow_forward), label: "Search"),
         ],
-        onTap: (int index) {
+        onTap: (int index) async {
           if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => searchRecipeScreen.SearchRecipeRoute()),
-            );
+            Navigator.pop(context);
           }
-          // Put code for search result change here.
-
           else if (index == 1) {
+            var foundRecipes;
+            if(nameController.text != "" && ingredients.isNotEmpty){
+              String all = "";
+              ingredients.forEach((element) {
+                all = all + " " + element;
+              });
+              foundRecipes = await RSClass.RecipeStorage.searchByNameAndIngred(
+                  nameController.text, all.substring(1));
+            }else if(nameController.text != ""){
+              foundRecipes = await RSClass.RecipeStorage.searchByName(
+                  nameController.text);
+            } else if(ingredients.isNotEmpty) {
+              String all = "";
+              ingredients.forEach((element) {
+                all = all + " " + element;
+              });
+              foundRecipes = await RSClass.RecipeStorage.searchByIngredients(
+                  all.substring(1));
+            }
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => searchRecipeScreen.SearchRecipeRoute()),
+              MaterialPageRoute(builder: (context) => searchRecipeScreen.SearchRecipeRoute(allFolders: widget.allFolders,recipes: foundRecipes, curr: null)),
             );
           }
 

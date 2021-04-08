@@ -111,9 +111,6 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
             if (_formKey.currentState.validate()) {
               var newRecipes = await RSClass.RecipeStorage.searchByName(
                   keyWordController.text);
-              newRecipes.forEach((element) {
-                print(element.data);
-              });
               Navigator.push(
                 context,
                 MaterialPageRoute(

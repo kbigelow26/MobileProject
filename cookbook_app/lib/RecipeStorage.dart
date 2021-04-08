@@ -138,15 +138,27 @@ class RecipeStorage {
     return docs.documents;
   }
 
-  static Future<List<DocumentSnapshot>> searchByNameIngredients(String keyWordN, String keyWordI) async {
+  static Future<List<DocumentSnapshot>> searchByIngredients(String keyWordI) async {
     Query results = Firestore.instance
         .collection('Recipe')
-        .where('name', isGreaterThanOrEqualTo: keyWordN)
-        .where('name', isLessThan: keyWordN + 'z')
         .where('ingredients', isGreaterThanOrEqualTo: keyWordI)
         .where('ingredients', isLessThan: keyWordI + 'z');
     var docs = await results.getDocuments();
     return docs.documents;
+  }
+
+  static Future<List<DocumentSnapshot>> searchByNameAndIngred(String keyWordN, String keyWordI) async {
+    Query results = Firestore.instance
+        .collection('Recipe')
+        .where('name', isGreaterThanOrEqualTo: keyWordN)
+        .where('name', isLessThan: keyWordN + 'z');
+    var docs = await results.getDocuments();
+    Query results2 = Firestore.instance
+        .collection('Recipe')
+        .where('ingredients', isGreaterThanOrEqualTo: keyWordI)
+        .where('ingredients', isLessThan: keyWordI + 'z');
+    var docs2 = await results2.getDocuments();
+    return docs.documents + docs2.documents;
   }
 
   static Map generateRecipe(
