@@ -7,6 +7,7 @@ import './RecipeStorage.dart' as RSClass;
 import './searchRecipeScreen.dart' as searchRecipeScreen;
 import './viewFolderScreen.dart' as viewFolderScreen;
 import './viewExistingRecipe.dart' as viewExistingRecipeScreen;
+import './signInScreen.dart' as signInScreen;
 
 import 'dart:convert';
 
@@ -125,10 +126,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                     ListTile(
-                      title: Text('Logout'),
+                      title: Text('LogIn'),
                       onTap: () {
-                        // Update the state of the app.
-                        // ...
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  signInScreen.SignInScreen()),
+                        );
                       },
                     ),
                   ],
