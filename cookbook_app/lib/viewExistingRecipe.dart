@@ -1,18 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import './main.dart' as homeScreen;
-import './finishRecipeScreen.dart' as finishRecipeScreen;
 import './RecipeStorage.dart' as RSClass;
 import './editRecipeScreen.dart' as editRecipeScreen;
 import './ApiHelper.dart' as spoonApi;
+import 'package:share/share.dart';
 
 class ViewExistingRecipe extends StatefulWidget {
   @override
@@ -200,7 +199,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
         future: widget.storage.readRecipe(widget.name),
         builder: (context, AsyncSnapshot<String> value) {
           if (value.hasData) {
-            print("View Recipe contents: "+value.data);
             var tempStr = value.data.split(', ingredients:');
             var recipeName = tempStr[0].replaceAll('{type: file, name: ', '');
             var helperToken = tempStr[1];
@@ -233,7 +231,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
               image = image.substring(0, image.length - 1);
             }
             _setImgState(image);
-            print("Image: "+image);
 
             //print('START OF FILES:');
             var dir = new Directory('data/user/0/com.testapp.cookbook_app/app_flutter/');
@@ -312,9 +309,14 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                     ),
                     ListTile(
                       title: Text('Share'),
-                      onTap: () {
-                        // Update the state of the app.
-                        // ...
+                      onTap: () async {
+                        var temp = widget.name.toString();
+                        var temp2 = temp.split("/");
+                        var curr = temp2[temp2.length - 1];
+                        final directory = await getApplicationDocumentsDirectory();
+                        final path = directory.path;
+                        final RenderBox box = context.findRenderObject();
+                        Share.shareFiles(['$path/$curr'], subject: "Look at this Recipe!");
                       },
                     ),
                   ],
