@@ -285,7 +285,8 @@ class _EditRecipeState extends State<EditRecipeRoute> {
                         instructions: instructController.text,
                         filePath: widget.filePath,
                         calorie: widget.calorie,
-                        public: widget.public)),
+                        public: widget.public,
+                        image: widget.image)),
               );
             }
           }
