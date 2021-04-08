@@ -28,7 +28,7 @@ class _ViewFolderState extends State<ViewFolderRoute> {
               child: Column(
                 children: [
                   Container(
-                    height: 44,
+                    height: 500,
                     child: ListView(
                       children: getListItems(),
                     ),
