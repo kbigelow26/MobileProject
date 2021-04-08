@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:core';
 import 'dart:developer';
 import 'dart:io';
 
@@ -10,6 +12,7 @@ import './main.dart' as homeScreen;
 import './finishRecipeScreen.dart' as finishRecipeScreen;
 import './RecipeStorage.dart' as RSClass;
 import './editRecipeScreen.dart' as editRecipeScreen;
+import './ApiHelper.dart' as spoonApi;
 
 class ViewExistingRecipe extends StatefulWidget {
   @override
@@ -28,6 +31,8 @@ class ViewExistingRecipe extends StatefulWidget {
 
 class _CreateRecipeState extends State<ViewExistingRecipe> {
   File _image;
+  String _apiCalorie = "N/A";
+  String _apiFact = "";
   final _formKey = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
   String _folderPick = 'No folder';
@@ -176,6 +181,19 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
       _image =  File(imgStr);
   }
 
+ _getApiInfo(String title) async {
+    log(title);
+    Future<String> resp = spoonApi.searchApiForInfo(title);
+    String returnStr = await resp;
+    var temp = returnStr.split('parseMe');
+    log("EAT THIS: "+returnStr);
+    setState(()  {
+      _apiCalorie = temp[0];
+      _apiFact = temp[1];
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -192,12 +210,12 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                 helperToken.substring(0, helperToken.indexOf(', calories: '));
             var tokenHelper = instructions.split(' instructions: ');
             bool calorie, public;
-            if (value.data.contains(', calories: true tags: ', 0)) {
+            if (value.data.contains(', calories: true, tags:', 0)) {
               calorie = true;
             } else {
               calorie = false;
             }
-            if (value.data.contains(', public: true image:', 0)) {
+            if (value.data.contains(', public: true, image:', 0)) {
               public = true;
             } else {
               public = false;
@@ -207,16 +225,20 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             var tags = tempValue.substring(0, tempValue.indexOf(", public: "));
             tempValue = value.data.split("image: ")[1];
             var image = tempValue.substring(0, tempValue.indexOf(", path:"));
-            image = image.substring(7, image.length);
+            //print("The image:" +image.toString());
+            if (image.startsWith("File: '")){
+              image = image.substring(7, image.length);
+            }
             while (image.endsWith("'")) {
               image = image.substring(0, image.length - 1);
             }
             _setImgState(image);
             print("Image: "+image);
 
-            print('START OF FILES:');
+            //print('START OF FILES:');
             var dir = new Directory('data/user/0/com.testapp.cookbook_app/app_flutter/');
             List contents = dir.listSync();
+            /*
             for (var fileOrDir in contents) {
               if (fileOrDir is File) {
                 print(fileOrDir);
@@ -224,8 +246,13 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                 print(fileOrDir.path);
               }
             }
-            print('END OF FILES:');
+            */
+            //print('END OF FILES:');
+            print(calorie.toString());
 
+
+            //_apiCalorie = "N/A";
+            //_getApiInfo(recipeName);
 
             tempValue = value.data.split("path: ")[1];
             var recipeFolder =
@@ -414,7 +441,51 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                   }
                                 },
                               )),
-                            ])
+                            ]),
+
+                            if (calorie == true)
+                            Row(children: <Widget>[
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      _getApiInfo(recipeName);
+                                    },
+                                    child: Text('See Nutrtional Info:\n'),
+                                  ),
+                              ),
+                            ]),
+                            Row(children: <Widget>[
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Estimated Total:"+_apiCalorie,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                    ),
+                                  )),
+                            ]),
+                            Row(children: <Widget>[
+                              Expanded(
+                                child: TextFormField(
+                                  enabled: false,
+                                  controller:
+                                  TextEditingController(text: "Nutritional Fact:" + _apiFact),
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 8,
+                                  decoration: InputDecoration(
+                                      border: const OutlineInputBorder(),
+                                      hintText: "..."),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter Ingredients';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              )
+                            ]),
                           ]),
                     ),
                   ),
