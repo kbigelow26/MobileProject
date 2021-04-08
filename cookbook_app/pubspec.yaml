@@ -37,6 +37,7 @@ dependencies:
   cloud_firestore: ^0.13.0+1
   firebase_auth: any
   firebase_dynamic_links: any
+  share: ^0.6.5
 
 dev_dependencies:
   flutter_test:

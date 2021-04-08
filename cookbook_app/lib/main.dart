@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  searchRecipeScreen.SearchRecipeRoute()),
+                                  searchRecipeScreen.SearchRecipeRoute(allFolders: allFolders, recipes: [], curr: null,)),
                         );
                       },
                     ),
