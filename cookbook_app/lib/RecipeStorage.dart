@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -124,50 +123,72 @@ class RecipeStorage {
   }
 
   static Future<String> uploadRecipe(Map recipe) {
-    Firestore.instance.collection('Recipe').document(recipe['name']).setData(recipe);
+    Firestore.instance
+        .collection('Recipe')
+        .document(recipe['name'])
+        .setData(recipe);
   }
 
-    static Map generateRecipe(
-        String name,
-        String ingredients,
-        String instructions,
-        bool calories,
-        String tags,
-        bool public,
-        String image,
-        String path) {
-      try {
-        var info = {
-          "type": "file",
-          "name": '$name',
-          "ingredients": '$ingredients',
-          "instructions": '$instructions',
-          "calories": '$calories',
-          "tags": '$tags',
-          "public": '$public',
-          "image": '$image',
-          "path": '$path'
-        };
-        writeRecipe(info);
-        if (public) {
-          uploadRecipe(info);
-        }
-        return info;
-      } catch (e) {
-        return null;
+  static Future<List<DocumentSnapshot>> searchByName(String keyWord) async {
+     Query results = Firestore.instance
+        .collection('Recipe')
+        .where('name', isGreaterThanOrEqualTo: keyWord)
+        .where('name', isLessThan: keyWord + 'z');
+     var docs = await results.getDocuments();
+    return docs.documents;
+  }
+
+  static Future<List<DocumentSnapshot>> searchByNameIngredients(String keyWordN, String keyWordI) async {
+    Query results = Firestore.instance
+        .collection('Recipe')
+        .where('name', isGreaterThanOrEqualTo: keyWordN)
+        .where('name', isLessThan: keyWordN + 'z')
+        .where('ingredients', isGreaterThanOrEqualTo: keyWordI)
+        .where('ingredients', isLessThan: keyWordI + 'z');
+    var docs = await results.getDocuments();
+    return docs.documents;
+  }
+
+  static Map generateRecipe(
+      String name,
+      String ingredients,
+      String instructions,
+      bool calories,
+      String tags,
+      bool public,
+      String image,
+      String path) {
+    try {
+      var info = {
+        "type": "file",
+        "name": '$name',
+        "ingredients": '$ingredients',
+        "instructions": '$instructions',
+        "calories": '$calories',
+        "tags": '$tags',
+        "public": '$public',
+        "image": '$image',
+        "path": '$path'
+      };
+      writeRecipe(info);
+      if (public) {
+        uploadRecipe(info);
       }
-    }
-
-    static Map generateFolder(String name) {
-      var info = {"type": "folder", "name": '$name', "order": 1};
-      writeFolder(info);
       return info;
-    }
-
-    static int deleteFolder(String name) {
-      var j = deleteFile(name);
-      print(j);
-      return 1;
+    } catch (e) {
+      return null;
     }
   }
 
+  static Map generateFolder(String name) {
+    var info = {"type": "folder", "name": '$name', "order": 1};
+    writeFolder(info);
+    return info;
+  }
+
+  static int deleteFolder(String name) {
+    var j = deleteFile(name);
+    print(j);
+    return 1;
+  }
+}

@@ -54,7 +54,7 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
                           textAlignVertical: TextAlignVertical.top,
                           maxLines: null,
                           decoration:
-                          InputDecoration(hintText: "Search"),
+                          InputDecoration(hintText: "Name"),
                         )),
                   ]),
 
@@ -82,27 +82,27 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
                   ),
 
                   Padding(padding: EdgeInsets.only(bottom: 20)),
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Tags",
-                        style: TextStyle(
-                          fontSize: 18.0,
-                        ),
-                      )),
-                  Padding(padding: EdgeInsets.only(bottom: 10)),
-                  TextFieldTags(
-                    //tags: ['university', 'college', 'music', 'math'],
-                      tagsStyler: TagsStyler(
-                          tagTextStyle: TextStyle(fontWeight: FontWeight.bold),
-                          tagDecoration: BoxDecoration(color: Colors.blue[300], borderRadius: BorderRadius.circular(8.0), ),
-                          tagCancelIcon: Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
-                          tagPadding: const EdgeInsets.all(6.0)
-                      ),
-                      textFieldStyler: TextFieldStyler(hintText: " ", helperText: " "),
-                      onTag: (tag) {},
-                      onDelete: (tag) {}
-                  ),
+                  // Align(
+                  //     alignment: Alignment.centerLeft,
+                  //     child: Text(
+                  //       "Tags",
+                  //       style: TextStyle(
+                  //         fontSize: 18.0,
+                  //       ),
+                  //     )),
+                  // Padding(padding: EdgeInsets.only(bottom: 10)),
+                  // TextFieldTags(
+                  //   //tags: ['university', 'college', 'music', 'math'],
+                  //     tagsStyler: TagsStyler(
+                  //         tagTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                  //         tagDecoration: BoxDecoration(color: Colors.blue[300], borderRadius: BorderRadius.circular(8.0), ),
+                  //         tagCancelIcon: Icon(Icons.cancel, size: 18.0, color: Colors.blue[900]),
+                  //         tagPadding: const EdgeInsets.all(6.0)
+                  //     ),
+                  //     textFieldStyler: TextFieldStyler(hintText: " ", helperText: " "),
+                  //     onTag: (tag) {},
+                  //     onDelete: (tag) {}
+                  // ),
                 ]),
           ),
         ),
