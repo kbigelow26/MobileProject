@@ -81,7 +81,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                   onSaved: (value) {
                     setState(() {
                       _folderPick = value;
-
                     });
                   },
                   onChanged: (value) {
@@ -100,7 +99,7 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                 if (_folderPick != folder) {
                   var check = await RSClass.RecipeStorage.deleteFile(
                       folder + "-" + rName);
-                  if(_folderPick == "No folder") {
+                  if (_folderPick == "No folder") {
                     var newRecipe = RSClass.RecipeStorage.generateRecipe(
                         rName,
                         ingredients,
@@ -129,7 +128,8 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => homeScreen.MyHomePage(
-                          title: 'Yum Binder', storage: RSClass.RecipeStorage())),
+                          title: 'Yum Binder',
+                          storage: RSClass.RecipeStorage())),
                 );
               }
             },
@@ -174,18 +174,17 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
   }
 
   _setImgState(String imgStr) async {
-      _image =  File(imgStr);
+    _image = File(imgStr);
   }
 
- _getApiInfo(String title) async {
+  _getApiInfo(String title) async {
     Future<String> resp = spoonApi.searchApiForInfo(title);
     String returnStr = await resp;
     var temp = returnStr.split('parseMe');
-    setState(()  {
+    setState(() {
       _apiCalorie = temp[0];
       _apiFact = temp[1];
     });
-
   }
 
   @override
@@ -218,18 +217,18 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             var tags = tempValue.substring(0, tempValue.indexOf(", public: "));
             tempValue = value.data.split("image: ")[1];
             var image = tempValue.substring(0, tempValue.indexOf(", path:"));
-            if (image.startsWith("File: '")){
+            if (image.startsWith("File: '")) {
               image = image.substring(7, image.length);
             }
             while (image.endsWith("'")) {
               image = image.substring(0, image.length - 1);
             }
             _setImgState(image);
-            var dir = new Directory('data/user/0/com.testapp.cookbook_app/app_flutter/');
+            var dir = new Directory(
+                'data/user/0/com.testapp.cookbook_app/app_flutter/');
             List contents = dir.listSync();
             tempValue = value.data.split("path: ")[1];
-            var recipeFolder =
-                tempValue.substring(0, tempValue.length - 1);
+            var recipeFolder = tempValue.substring(0, tempValue.length - 1);
             if (!widget.allFolders.contains("No folder")) {
               widget.allFolders.add("No folder");
             }
@@ -277,8 +276,17 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                     ListTile(
                       title: Text('Move'),
                       onTap: () {
-                        _openMoveRecipe(context, widget.allFolders, recipeName,
-                            recipeFolder, ingredients, instructions, calorie, tags, public, image);
+                        _openMoveRecipe(
+                            context,
+                            widget.allFolders,
+                            recipeName,
+                            recipeFolder,
+                            ingredients,
+                            instructions,
+                            calorie,
+                            tags,
+                            public,
+                            image);
                       },
                     ),
                     ListTile(
@@ -287,10 +295,12 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                         var temp = widget.name.toString();
                         var temp2 = temp.split("/");
                         var curr = temp2[temp2.length - 1];
-                        final directory = await getApplicationDocumentsDirectory();
+                        final directory =
+                            await getApplicationDocumentsDirectory();
                         final path = directory.path;
                         final RenderBox box = context.findRenderObject();
-                        Share.shareFiles(['$path/$curr'], subject: "Look at this Recipe!");
+                        Share.shareFiles(['$path/$curr'],
+                            subject: "Look at this Recipe!");
                       },
                     ),
                   ],
@@ -306,13 +316,13 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                           children: <Widget>[
                             Row(children: <Widget>[
                               Expanded(
-                                  flex: 5,
-                                  child: Text(
-                                    recipeName,
-                                    style: TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold
-                                ),),
+                                flex: 5,
+                                child: Text(
+                                  recipeName,
+                                  style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                               Expanded(
                                 flex: 1,
@@ -321,8 +331,7 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                               Expanded(
                                   flex: 4,
                                   child: GestureDetector(
-                                      onTap: () {
-                                      },
+                                      onTap: () {},
                                       child: ClipRRect(
                                         child: _image != null
                                             ? ClipRRect(
@@ -347,15 +356,16 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                               ),
                                       )))
                             ]),
-                            Divider(thickness: 2,),
+                            Divider(
+                              thickness: 2,
+                            ),
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Ingredients",
                                   style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
                                 )),
                             Row(children: <Widget>[
                               Expanded(
@@ -371,32 +381,35 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                 ),
                               )
                             ]),
-                            Divider(thickness: 2,),
+                            Divider(
+                              thickness: 2,
+                            ),
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Instructions",
                                   style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
                                 )),
                             Row(children: <Widget>[
                               Expanded(
                                   child: TextField(
+                                enabled: false,
                                 controller:
                                     TextEditingController(text: instructions),
                                 keyboardType: TextInputType.multiline,
                                 maxLines: 8,
                                 decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "..."),
+                                    border: InputBorder.none, hintText: "..."),
                               )),
                             ]),
-                            Divider(thickness: 2,),
+                            Divider(
+                              thickness: 2,
+                            ),
                             if (calorie == true)
-                            Row(children: <Widget>[
-                              Align(
+                              Row(children: <Widget>[
+                                Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextButton(
                                     onPressed: () {
@@ -404,29 +417,32 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                     },
                                     child: Text('See Nutrtional Info:\n'),
                                   ),
-                              ),
-                            ]),
+                                ),
+                              ]),
                             Row(children: <Widget>[
                               Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "Estimated Calorie Total: "+_apiCalorie,
+                                    "Estimated Calorie Total: " + _apiCalorie,
                                     style: TextStyle(
-                                      fontSize: 18.0,
-                                        fontWeight: FontWeight.bold
-                                    ),
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
                                   )),
                             ]),
-                            Divider(thickness: 2,),
+                            Divider(
+                              thickness: 2,
+                            ),
                             Row(
                               children: [
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                child: Text("Nutritional Fact: ",
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                      fontWeight: FontWeight.bold
-                                  ),),)
+                                  child: Text(
+                                    "Nutritional Fact: ",
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
                               ],
                             ),
                             Row(children: <Widget>[
@@ -434,7 +450,7 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                 child: TextField(
                                   enabled: false,
                                   controller:
-                                  TextEditingController(text: _apiFact),
+                                      TextEditingController(text: _apiFact),
                                   maxLines: 8,
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
