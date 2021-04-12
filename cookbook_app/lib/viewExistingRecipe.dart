@@ -410,18 +410,31 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                               Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "Estimated Calorie Total:"+_apiCalorie,
+                                    "Estimated Calorie Total: "+_apiCalorie,
                                     style: TextStyle(
                                       fontSize: 18.0,
+                                        fontWeight: FontWeight.bold
                                     ),
                                   )),
                             ]),
+                            Divider(thickness: 2,),
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                child: Text("Nutritional Fact: ",
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                      fontWeight: FontWeight.bold
+                                  ),),)
+                              ],
+                            ),
                             Row(children: <Widget>[
                               Expanded(
                                 child: TextField(
                                   enabled: false,
                                   controller:
-                                  TextEditingController(text: "Nutritional Fact:" + _apiFact),
+                                  TextEditingController(text: _apiFact),
                                   maxLines: 8,
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
