@@ -299,7 +299,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
               body: Center(
                 child: SingleChildScrollView(
                   child: Form(
-                    key: _formKey,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -308,22 +307,13 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                             Row(children: <Widget>[
                               Expanded(
                                   flex: 5,
-                                  child: TextFormField(
-                                    enabled: false,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: null,
-                                    decoration:
-                                        InputDecoration(hintText: '...'),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'Please enter a title';
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    controller:
-                                        TextEditingController(text: recipeName),
-                                  )),
+                                  child: Text(
+                                    recipeName,
+                                    style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold
+                                ),),
+                              ),
                               Expanded(
                                 flex: 1,
                                 child: Container(width: 0.0, height: 0.0),
@@ -357,67 +347,53 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                               ),
                                       )))
                             ]),
-                            Padding(padding: EdgeInsets.only(bottom: 20)),
+                            Divider(thickness: 2,),
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Ingredients",
                                   style: TextStyle(
                                     fontSize: 18.0,
+                                    fontWeight: FontWeight.bold
                                   ),
                                 )),
-                            Padding(padding: EdgeInsets.only(bottom: 10)),
                             Row(children: <Widget>[
                               Expanded(
-                                child: TextFormField(
+                                child: TextField(
                                   enabled: false,
                                   controller:
                                       TextEditingController(text: ingredients),
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 8,
                                   decoration: InputDecoration(
-                                      border: const OutlineInputBorder(),
+                                      border: InputBorder.none,
                                       hintText: "..."),
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Please enter Ingredients';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
                                 ),
                               )
                             ]),
-                            Padding(padding: EdgeInsets.only(bottom: 20)),
+                            Divider(thickness: 2,),
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Instructions",
                                   style: TextStyle(
                                     fontSize: 18.0,
+                                    fontWeight: FontWeight.bold
                                   ),
                                 )),
-                            Padding(padding: EdgeInsets.only(bottom: 10)),
                             Row(children: <Widget>[
                               Expanded(
-                                  child: TextFormField(
+                                  child: TextField(
                                 controller:
                                     TextEditingController(text: instructions),
                                 keyboardType: TextInputType.multiline,
                                 maxLines: 8,
                                 decoration: InputDecoration(
-                                    enabled: false,
-                                    border: const OutlineInputBorder(),
+                                    border: InputBorder.none,
                                     hintText: "..."),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Please enter Instructions';
-                                  } else {
-                                    return null;
-                                  }
-                                },
                               )),
                             ]),
+                            Divider(thickness: 2,),
                             if (calorie == true)
                             Row(children: <Widget>[
                               Align(
@@ -434,7 +410,7 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                               Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "Estimated Total:"+_apiCalorie,
+                                    "Estimated Calorie Total:"+_apiCalorie,
                                     style: TextStyle(
                                       fontSize: 18.0,
                                     ),
@@ -442,22 +418,14 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                             ]),
                             Row(children: <Widget>[
                               Expanded(
-                                child: TextFormField(
+                                child: TextField(
                                   enabled: false,
                                   controller:
                                   TextEditingController(text: "Nutritional Fact:" + _apiFact),
-                                  keyboardType: TextInputType.multiline,
                                   maxLines: 8,
                                   decoration: InputDecoration(
-                                      border: const OutlineInputBorder(),
+                                      border: InputBorder.none,
                                       hintText: "..."),
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Please enter Ingredients';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
                                 ),
                               )
                             ]),

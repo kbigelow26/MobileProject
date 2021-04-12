@@ -53,7 +53,12 @@ class _UpdateFoldersState extends State<UpdateFoldersRoute> {
               if (_formKey.currentState.validate()) {
                 RSClass.RecipeStorage.generateFolder(nameController.text);
                 widget.folders.add(nameController.text);
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>
+                      homeScreen.MyHomePage(
+                          title: 'Yum Binder', storage: RSClass.RecipeStorage())),
+                );
               }
             },
             child: Text(
@@ -82,7 +87,7 @@ class _UpdateFoldersState extends State<UpdateFoldersRoute> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.arrow_back), label: "Back"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.check), label: "Done"),
+              icon: Icon(Icons.check), label: ""),
         ],
         onTap: (int index) {
           if (index == 0) {
