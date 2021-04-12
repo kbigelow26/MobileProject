@@ -88,9 +88,7 @@ class _reorderListState extends State<reorderList> {
             onPressed: () async {
               var check =
                   await RSClass.RecipeStorage.deleteFile("folder-" + name);
-              setState(() {
-
-              });
+              setState(() {});
               Navigator.pop(context);
             },
             child: Text(
@@ -134,24 +132,9 @@ class _reorderListState extends State<reorderList> {
         if (newIndex > oldIndex) {
           newIndex = newIndex - 1;
         }
-        // setState(() {
-        //   String choice = currentItems[oldIndex];
-        //   currentItems.removeAt(oldIndex);
-        //   currentItems.insert(newIndex, choice);
-        // });
       },
       children: getListItems(),
     ));
   }
 
-// void onReorder(int oldIndex, int newIndex){
-//   if(newIndex > oldIndex){
-//     newIndex = newIndex - 1;
-//   }
-//   setState(() {
-//     String choice = currentItems[oldIndex];
-//     currentItems.removeAt(oldIndex);
-//     currentItems.insert(newIndex, choice);
-//   });
-// }
 }

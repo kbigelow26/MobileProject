@@ -85,7 +85,6 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
                       child: ListView(
                         children: getListItems(),
                       )
-
                     )
                   ]),
             ),
@@ -171,5 +170,4 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
       },
     );
   }
-
 }

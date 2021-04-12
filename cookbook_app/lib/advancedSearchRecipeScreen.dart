@@ -51,7 +51,6 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
                             InputDecoration(hintText: "Name"),
                           )),
                     ]),
-
                     Padding(padding: EdgeInsets.only(bottom: 20)),
                     Align(
                         alignment: Alignment.centerLeft,
@@ -72,14 +71,12 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
                         ),
                         textFieldStyler: TextFieldStyler(hintText: " ", helperText: " "),
                         onTag: (tag) {
-                          print(tag);
                           ingredients.add(tag);
                         },
                         onDelete: (tag) {
                           ingredients.remove(tag);
                         }
                     ),
-
                     Padding(padding: EdgeInsets.only(bottom: 20)),
                   ]),
             ),
@@ -121,7 +118,6 @@ class _SearchRecipeState extends State<SearchRecipeRoute> {
               MaterialPageRoute(builder: (context) => searchRecipeScreen.SearchRecipeRoute(allFolders: widget.allFolders,recipes: foundRecipes, curr: null)),
             );
           }
-
         },
       ),
     );

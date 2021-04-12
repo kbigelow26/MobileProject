@@ -5,14 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import './main.dart' as homeScreen;
 import './finishRecipeScreen.dart' as finishRecipeScreen;
 import './RecipeStorage.dart' as RSClass;
-import 'package:http/http.dart' as http;
 import './ApiHelper.dart' as spoonApi;
-
-
 
 class CreateRecipeRoute extends StatefulWidget {
   @override
@@ -62,7 +58,6 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
                       title: new Text('From the Internet'),
                       onTap: () {
                         _imgFromInternet();
-                        //Navigator.of(context).pop();
                       }),
                 ],
               ),
@@ -74,7 +69,6 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
   _imgFromCamera() async {
     File image = (await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50));
-
     setState(() {
       _image = image;
     });
@@ -83,26 +77,21 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
   _imgFromGallery() async {
     File image = (await ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50));
-
     setState(() {
       _image = image;
     });
   }
   
   _imgFromInternet() async {
-
     Future<String> resp = spoonApi.searchApiForImg(titleController.text);
-    log(await resp);
-
     var myFile;
     myFile = await spoonApi.validateImgResponse(await resp, titleController.text);
-
     if (myFile != null && titleController.text.isNotEmpty) {
       setState(() {
         _image = myFile;
       });
     } else {
-      showDialog(
+        showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -118,10 +107,7 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
             );
           });
     }
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +260,6 @@ class _CreateRecipeState extends State<CreateRecipeRoute> {
                 name = name.substring(0, name.length - 1);
               }
               File newImage = await _image.copy('$path/$name');
-
               Navigator.push(
                 context,
                 MaterialPageRoute(

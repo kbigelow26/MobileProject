@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -100,7 +98,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             onPressed: () async {
               if (_formKey2.currentState.validate()) {
                 if (_folderPick != folder) {
-
                   var check = await RSClass.RecipeStorage.deleteFile(
                       folder + "-" + rName);
                   if(_folderPick == "No folder") {
@@ -124,7 +121,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                         image,
                         _folderPick);
                   }
-
                 }
                 setState(() {
                   _folderResult = _folderPick;
@@ -182,11 +178,9 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
   }
 
  _getApiInfo(String title) async {
-    log(title);
     Future<String> resp = spoonApi.searchApiForInfo(title);
     String returnStr = await resp;
     var temp = returnStr.split('parseMe');
-    log("EAT THIS: "+returnStr);
     setState(()  {
       _apiCalorie = temp[0];
       _apiFact = temp[1];
@@ -224,7 +218,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             var tags = tempValue.substring(0, tempValue.indexOf(", public: "));
             tempValue = value.data.split("image: ")[1];
             var image = tempValue.substring(0, tempValue.indexOf(", path:"));
-            //print("The image:" +image.toString());
             if (image.startsWith("File: '")){
               image = image.substring(7, image.length);
             }
@@ -232,26 +225,8 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
               image = image.substring(0, image.length - 1);
             }
             _setImgState(image);
-
-            //print('START OF FILES:');
             var dir = new Directory('data/user/0/com.testapp.cookbook_app/app_flutter/');
             List contents = dir.listSync();
-            /*
-            for (var fileOrDir in contents) {
-              if (fileOrDir is File) {
-                print(fileOrDir);
-              } else if (fileOrDir is Directory) {
-                print(fileOrDir.path);
-              }
-            }
-            */
-            //print('END OF FILES:');
-            print(calorie.toString());
-
-
-            //_apiCalorie = "N/A";
-            //_getApiInfo(recipeName);
-
             tempValue = value.data.split("path: ")[1];
             var recipeFolder =
                 tempValue.substring(0, tempValue.length - 1);
@@ -267,9 +242,7 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                 // through the options in the drawer if there isn't enough vertical
                 // space to fit everything.
                 child: ListView(
-                  // Important: Remove any padding from the ListView.
                   padding: EdgeInsets.zero,
-                  //child: Column(
                   children: <Widget>[
                     DrawerHeader(
                       child: Text('Yum Binder'),
@@ -445,7 +418,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                 },
                               )),
                             ]),
-
                             if (calorie == true)
                             Row(children: <Widget>[
                               Align(

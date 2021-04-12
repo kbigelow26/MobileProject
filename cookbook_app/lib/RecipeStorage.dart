@@ -41,7 +41,6 @@ class RecipeStorage {
     try {
       var delete = await deleteFile(fileName);
       var make = generateFolder(newFileName);
-      //TODO : rename all files in folder
       return 1;
     } catch (e) {
       return 0;
@@ -200,7 +199,6 @@ class RecipeStorage {
 
   static int deleteFolder(String name) {
     var j = deleteFile(name);
-    print(j);
     return 1;
   }
 }

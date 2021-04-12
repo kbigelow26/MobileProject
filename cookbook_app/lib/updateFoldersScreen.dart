@@ -106,9 +106,3 @@ class _UpdateFoldersState extends State<UpdateFoldersRoute> {
     );
   }
 }
-
-//setState(() {
-//     String choice = currentItems[oldIndex];
-//     currentItems.removeAt(oldIndex);
-//     currentItems.insert(newIndex, choice);
-//   });
