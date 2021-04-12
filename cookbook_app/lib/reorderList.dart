@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import './RecipeStorage.dart' as RSClass;
+import './main.dart' as homeScreen;
 
 class reorderList extends StatefulWidget {
   reorderList({Key key, this.folders, this.allFiles, this.storage}) : super(key: key);
@@ -61,7 +62,12 @@ class _reorderListState extends State<reorderList> {
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 var contents = RSClass.RecipeStorage.renameFolder("folder-"+name, nameController.text);
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>
+                      homeScreen.MyHomePage(
+                          title: 'Yum Binder', storage: RSClass.RecipeStorage())),
+                );
               }
             },
             child: Text(
@@ -75,7 +81,7 @@ class _reorderListState extends State<reorderList> {
   _openDeleteFolder(context, String name) {
     Alert(
         context: context,
-        title: "Are you sure you want to delete?",
+        title: "Are you sure you want to delete '"+ name +"'?",
         buttons: [
           DialogButton(
             onPressed: () => Navigator.pop(context),
@@ -88,10 +94,13 @@ class _reorderListState extends State<reorderList> {
             onPressed: () async {
               var check =
                   await RSClass.RecipeStorage.deleteFile("folder-" + name);
-              setState(() {
-
-              });
-              Navigator.pop(context);
+              setState(() {});
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>
+                    homeScreen.MyHomePage(
+                        title: 'Yum Binder', storage: RSClass.RecipeStorage())),
+              );
             },
             child: Text(
               "Yes",
@@ -134,24 +143,9 @@ class _reorderListState extends State<reorderList> {
         if (newIndex > oldIndex) {
           newIndex = newIndex - 1;
         }
-        // setState(() {
-        //   String choice = currentItems[oldIndex];
-        //   currentItems.removeAt(oldIndex);
-        //   currentItems.insert(newIndex, choice);
-        // });
       },
       children: getListItems(),
     ));
   }
 
-// void onReorder(int oldIndex, int newIndex){
-//   if(newIndex > oldIndex){
-//     newIndex = newIndex - 1;
-//   }
-//   setState(() {
-//     String choice = currentItems[oldIndex];
-//     currentItems.removeAt(oldIndex);
-//     currentItems.insert(newIndex, choice);
-//   });
-// }
 }

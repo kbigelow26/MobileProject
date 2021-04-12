@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -83,7 +81,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                   onSaved: (value) {
                     setState(() {
                       _folderPick = value;
-
                     });
                   },
                   onChanged: (value) {
@@ -100,10 +97,9 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             onPressed: () async {
               if (_formKey2.currentState.validate()) {
                 if (_folderPick != folder) {
-
                   var check = await RSClass.RecipeStorage.deleteFile(
                       folder + "-" + rName);
-                  if(_folderPick == "No folder") {
+                  if (_folderPick == "No folder") {
                     var newRecipe = RSClass.RecipeStorage.generateRecipe(
                         rName,
                         ingredients,
@@ -124,7 +120,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                         image,
                         _folderPick);
                   }
-
                 }
                 setState(() {
                   _folderResult = _folderPick;
@@ -133,7 +128,8 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => homeScreen.MyHomePage(
-                          title: 'Yum Binder', storage: RSClass.RecipeStorage())),
+                          title: 'Yum Binder',
+                          storage: RSClass.RecipeStorage())),
                 );
               }
             },
@@ -178,20 +174,17 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
   }
 
   _setImgState(String imgStr) async {
-      _image =  File(imgStr);
+    _image = File(imgStr);
   }
 
- _getApiInfo(String title) async {
-    log(title);
+  _getApiInfo(String title) async {
     Future<String> resp = spoonApi.searchApiForInfo(title);
     String returnStr = await resp;
     var temp = returnStr.split('parseMe');
-    log("EAT THIS: "+returnStr);
-    setState(()  {
+    setState(() {
       _apiCalorie = temp[0];
       _apiFact = temp[1];
     });
-
   }
 
   @override
@@ -224,37 +217,18 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
             var tags = tempValue.substring(0, tempValue.indexOf(", public: "));
             tempValue = value.data.split("image: ")[1];
             var image = tempValue.substring(0, tempValue.indexOf(", path:"));
-            //print("The image:" +image.toString());
-            if (image.startsWith("File: '")){
+            if (image.startsWith("File: '")) {
               image = image.substring(7, image.length);
             }
             while (image.endsWith("'")) {
               image = image.substring(0, image.length - 1);
             }
             _setImgState(image);
-
-            //print('START OF FILES:');
-            var dir = new Directory('data/user/0/com.testapp.cookbook_app/app_flutter/');
+            var dir = new Directory(
+                'data/user/0/com.testapp.cookbook_app/app_flutter/');
             List contents = dir.listSync();
-            /*
-            for (var fileOrDir in contents) {
-              if (fileOrDir is File) {
-                print(fileOrDir);
-              } else if (fileOrDir is Directory) {
-                print(fileOrDir.path);
-              }
-            }
-            */
-            //print('END OF FILES:');
-            print(calorie.toString());
-
-
-            //_apiCalorie = "N/A";
-            //_getApiInfo(recipeName);
-
             tempValue = value.data.split("path: ")[1];
-            var recipeFolder =
-                tempValue.substring(0, tempValue.length - 1);
+            var recipeFolder = tempValue.substring(0, tempValue.length - 1);
             if (!widget.allFolders.contains("No folder")) {
               widget.allFolders.add("No folder");
             }
@@ -267,9 +241,7 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                 // through the options in the drawer if there isn't enough vertical
                 // space to fit everything.
                 child: ListView(
-                  // Important: Remove any padding from the ListView.
                   padding: EdgeInsets.zero,
-                  //child: Column(
                   children: <Widget>[
                     DrawerHeader(
                       child: Text('Yum Binder'),
@@ -304,8 +276,17 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                     ListTile(
                       title: Text('Move'),
                       onTap: () {
-                        _openMoveRecipe(context, widget.allFolders, recipeName,
-                            recipeFolder, ingredients, instructions, calorie, tags, public, image);
+                        _openMoveRecipe(
+                            context,
+                            widget.allFolders,
+                            recipeName,
+                            recipeFolder,
+                            ingredients,
+                            instructions,
+                            calorie,
+                            tags,
+                            public,
+                            image);
                       },
                     ),
                     ListTile(
@@ -314,10 +295,12 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                         var temp = widget.name.toString();
                         var temp2 = temp.split("/");
                         var curr = temp2[temp2.length - 1];
-                        final directory = await getApplicationDocumentsDirectory();
+                        final directory =
+                            await getApplicationDocumentsDirectory();
                         final path = directory.path;
                         final RenderBox box = context.findRenderObject();
-                        Share.shareFiles(['$path/$curr'], subject: "Look at this Recipe!");
+                        Share.shareFiles(['$path/$curr'],
+                            subject: "Look at this Recipe!");
                       },
                     ),
                   ],
@@ -326,7 +309,6 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
               body: Center(
                 child: SingleChildScrollView(
                   child: Form(
-                    key: _formKey,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -334,23 +316,14 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                           children: <Widget>[
                             Row(children: <Widget>[
                               Expanded(
-                                  flex: 5,
-                                  child: TextFormField(
-                                    enabled: false,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: null,
-                                    decoration:
-                                        InputDecoration(hintText: '...'),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'Please enter a title';
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    controller:
-                                        TextEditingController(text: recipeName),
-                                  )),
+                                flex: 5,
+                                child: Text(
+                                  recipeName,
+                                  style: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
                               Expanded(
                                 flex: 1,
                                 child: Container(width: 0.0, height: 0.0),
@@ -358,8 +331,7 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                               Expanded(
                                   flex: 4,
                                   child: GestureDetector(
-                                      onTap: () {
-                                      },
+                                      onTap: () {},
                                       child: ClipRRect(
                                         child: _image != null
                                             ? ClipRRect(
@@ -384,71 +356,60 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                               ),
                                       )))
                             ]),
-                            Padding(padding: EdgeInsets.only(bottom: 20)),
+                            Divider(
+                              thickness: 2,
+                            ),
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Ingredients",
                                   style: TextStyle(
-                                    fontSize: 18.0,
-                                  ),
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
                                 )),
-                            Padding(padding: EdgeInsets.only(bottom: 10)),
                             Row(children: <Widget>[
                               Expanded(
-                                child: TextFormField(
+                                child: TextField(
                                   enabled: false,
                                   controller:
                                       TextEditingController(text: ingredients),
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 8,
                                   decoration: InputDecoration(
-                                      border: const OutlineInputBorder(),
+                                      border: InputBorder.none,
                                       hintText: "..."),
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Please enter Ingredients';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
                                 ),
                               )
                             ]),
-                            Padding(padding: EdgeInsets.only(bottom: 20)),
+                            Divider(
+                              thickness: 2,
+                            ),
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Instructions",
                                   style: TextStyle(
-                                    fontSize: 18.0,
-                                  ),
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
                                 )),
-                            Padding(padding: EdgeInsets.only(bottom: 10)),
                             Row(children: <Widget>[
                               Expanded(
-                                  child: TextFormField(
+                                  child: TextField(
+                                enabled: false,
                                 controller:
                                     TextEditingController(text: instructions),
                                 keyboardType: TextInputType.multiline,
                                 maxLines: 8,
                                 decoration: InputDecoration(
-                                    enabled: false,
-                                    border: const OutlineInputBorder(),
-                                    hintText: "..."),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Please enter Instructions';
-                                  } else {
-                                    return null;
-                                  }
-                                },
+                                    border: InputBorder.none, hintText: "..."),
                               )),
                             ]),
-
+                            Divider(
+                              thickness: 2,
+                            ),
                             if (calorie == true)
-                            Row(children: <Widget>[
-                              Align(
+                              Row(children: <Widget>[
+                                Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextButton(
                                     onPressed: () {
@@ -456,36 +417,44 @@ class _CreateRecipeState extends State<ViewExistingRecipe> {
                                     },
                                     child: Text('See Nutrtional Info:\n'),
                                   ),
-                              ),
-                            ]),
+                                ),
+                              ]),
                             Row(children: <Widget>[
                               Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "Estimated Total:"+_apiCalorie,
+                                    "Estimated Calorie Total: " + _apiCalorie,
                                     style: TextStyle(
-                                      fontSize: 18.0,
-                                    ),
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
                                   )),
                             ]),
+                            Divider(
+                              thickness: 2,
+                            ),
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Nutritional Fact: ",
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              ],
+                            ),
                             Row(children: <Widget>[
                               Expanded(
-                                child: TextFormField(
+                                child: TextField(
                                   enabled: false,
                                   controller:
-                                  TextEditingController(text: "Nutritional Fact:" + _apiFact),
-                                  keyboardType: TextInputType.multiline,
+                                      TextEditingController(text: _apiFact),
                                   maxLines: 8,
                                   decoration: InputDecoration(
-                                      border: const OutlineInputBorder(),
+                                      border: InputBorder.none,
                                       hintText: "..."),
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Please enter Ingredients';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
                                 ),
                               )
                             ]),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import './main.dart' as homeScreen;
 import './RecipeStorage.dart' as RSClass;
 import './viewExistingRecipe.dart' as viewExistingRecipeScreen;
 

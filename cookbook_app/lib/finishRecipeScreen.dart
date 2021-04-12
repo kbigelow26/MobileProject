@@ -19,11 +19,8 @@ class FinishRecipeRoute extends StatefulWidget {
 }
 
 _getApiInfo(String title) async {
-
   Future<String> resp = spoonApi.searchApiForInfo(title);
-  log(await resp);
   return await resp;
-
 }
 
 class _FinishRecipeState extends State<FinishRecipeRoute> {

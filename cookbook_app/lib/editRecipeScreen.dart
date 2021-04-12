@@ -10,7 +10,6 @@ import './RecipeStorage.dart' as RSClass;
 import './ApiHelper.dart' as spoonApi;
 
 class EditRecipeRoute extends StatefulWidget {
-
   final String name;
   final String ingredients;
   final String instructions;
@@ -70,7 +69,6 @@ class _EditRecipeState extends State<EditRecipeRoute> {
                       title: new Text('From the Internet'),
                       onTap: () {
                         _imgFromInternet();
-                        //Navigator.of(context).pop();
                       }),
                 ],
               ),
@@ -82,7 +80,6 @@ class _EditRecipeState extends State<EditRecipeRoute> {
   _imgFromCamera() async {
     File image = (await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50));
-
     setState(() {
       _image = image;
     });
@@ -91,20 +88,15 @@ class _EditRecipeState extends State<EditRecipeRoute> {
   _imgFromGallery() async {
     File image = (await ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50));
-
     setState(() {
       _image = image;
     });
   }
 
   _imgFromInternet() async {
-
     Future<String> resp = spoonApi.searchApiForImg(titleController.text);
-    log(await resp);
-
     var myFile;
     myFile = await spoonApi.validateImgResponse(await resp, titleController.text);
-
     if (myFile != null) {
       setState(() {
         _image = myFile;

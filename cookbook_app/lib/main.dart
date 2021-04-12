@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import './createRecipeScreen.dart' as createRecipeScreen;
 import './updateFoldersScreen.dart' as updateFoldersScreen;
@@ -9,7 +7,6 @@ import './viewFolderScreen.dart' as viewFolderScreen;
 import './viewExistingRecipe.dart' as viewExistingRecipeScreen;
 import './signInScreen.dart' as signInScreen;
 
-import 'dart:convert';
 
 void main() {
   runApp(MyApp());
@@ -94,13 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               builder: (context) =>
                                   searchRecipeScreen.SearchRecipeRoute(allFolders: allFolders, recipes: [], curr: null,)),
                         );
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Share a Recipe'),
-                      onTap: () {
-                        // Update the state of the app.
-                        // ...
                       },
                     ),
                     ListTile(
