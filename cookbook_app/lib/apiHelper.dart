@@ -6,13 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:math';
 
-/* Additional API Keys to use incase credits run out
-final String spoonApi = "e6cfdf5b5e7347faa658da79c7c3b35f";
-final String spoonApi = "7a2cfe142ee140c78b253925d3661ba3";
-final String spoonApi = "5e69c70973bf431e87a897b255adf805";
-*/
-
-final String spoonApi = "73f12deeaff3417a969f0f5b8a321766";
+final String spoonApi = "notRealKey123";
 
 Future<String> searchApiForImg(String recipeName) async {
   final response = await http.read("https://api.spoonacular.com/recipes/complexSearch?query=$recipeName&number=1&apiKey=$spoonApi");
